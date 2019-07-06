@@ -1,0 +1,147 @@
+entity Product {
+	reference String,
+    name String,
+    showInCatalogue Boolean,
+    image ImageBlob,
+    isActive Boolean,
+    sku String,
+    IDPcode String,
+    isServiceItem Boolean,
+    isAuxilaryItem Boolean,
+	minQuantityLevel Double,
+    maxQuantityLevel Double,
+    storageCost Double,
+    sellingPrice Double,
+    buyPrice Double
+}
+entity Discount{
+	rate Double
+}
+entity Manufacturer{
+    IDPcode String,
+	name String
+}
+entity Brand{
+	IDPcode String,
+	name String
+}
+entity ComboLineItem{
+   quantity Double,
+   description String
+}
+entity AuxilaryLineItem{
+	description String,
+    quantity Double
+}
+entity Supplier{
+    IDPcode String,
+	companyName String,
+    creditLimit Double,
+    currentDebt Double,
+    debtDate LocalDate,
+    visible Boolean
+}
+entity Contact{
+	saluation String,
+    firstName String,
+    lastName String,
+    email String,
+    telephone Long,
+    mobile Long,
+    fax String,
+    websiteURL String,
+    facebook String,
+    twitter String
+}
+entity UOM{
+    IDPcode String,
+	unit String,
+    description String
+}
+entity Category{
+	IDPcode String,
+    name String,
+    image ImageBlob,
+    description String
+}
+entity TaxCategory {
+	IDPcode String,
+	name String,
+    description String
+}
+entity Tax{
+	name String,
+	rate Double,
+	description String
+}
+entity Location {
+	IDPcode String,
+    name String,
+    latLon String
+}
+entity Address{
+	addressLine1 String,
+    addressLine2 String,
+	cityOrTown String,
+    state String,
+    country String,
+    zipcode String
+}
+entity StockEntry{
+    IDPcode String,
+	reference String,
+	date LocalDate,
+    description String
+}
+entity EntryLineItem{
+	quantityAdjustment Double,
+    valueAdjustment Double,
+    description String
+}
+entity Reason{
+	IDPcode String,
+	name String,
+    description String
+}
+entity StockCurrent{
+	IDPcode String,
+    quantity Double,
+    sellPrice Double,
+    notes String
+}
+entity Label{
+    IDPcode String,
+	name String
+}
+relationship ManyToOne{
+	Product{taxCategory} to TaxCategory,
+    Product{unit} to UOM,
+    Product{location} to Location,
+    Location{address} to Address,
+    Product{supplier} to Supplier,
+    Supplier{address} to Address,
+    ComboLineItem{comboItem} to Product,
+    AuxilaryLineItem{auxilaryItem} to Product,
+    EntryLineItem{product} to Product,
+    StockEntry{reason} to Reason,
+    StockCurrent{product} to Product,
+    StockEntry{location} to Location,
+    Product{manufacturer} to Manufacturer,
+    Product{Brand} to Brand,
+    Product{discount} to Discount
+}
+relationship OneToOne{
+	Supplier{contact} to Contact
+}
+relationship OneToMany{
+	TaxCategory{taxes} to Tax,
+    Category{products} to Product,
+    Product{auxilaryLineItems} to AuxilaryLineItem,
+    Product{comboLineItems} to ComboLineItem,
+    StockEntry{entryLineItems} to EntryLineItem,
+    Product{labels} to Label
+}
+
+paginate all with pagination
+dto * with mapstruct
+service all with serviceImpl 

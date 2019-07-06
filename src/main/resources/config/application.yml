@@ -148,12 +148,15 @@ spring:
 # export SECURITY_OAUTH2_CLIENT_CLIENT_SECRET="38561a05"
 # ===================================================================
 security:
-    oauth2:
-        client:
-            client-id: internal
-            client-secret: internal
-        resource:
-            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+  oauth2:
+    client:
+      access-token-uri: http://35.196.86.249:8080/auth/realms/graeshoppe/protocol/openid-connect/token
+      user-authorization-uri: http://35.196.86.249:8080/auth/realms/graeshoppe/protocol/openid-connect/auth
+      client-id: account
+      client-secret: 29a095bc-9ced-480b-a719-4e70ce7dcc49
+      scope: openid profile email
+    resource:
+      user-info-uri: http://35.196.86.249:8080/auth/realms/graeshoppe/protocol/openid-connect/userinfo
 
 server:
     servlet:
