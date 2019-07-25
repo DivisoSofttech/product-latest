@@ -1,12 +1,16 @@
 package com.diviso.graeshoppe.product.web.rest;
+import com.diviso.graeshoppe.product.domain.Category;
 import com.diviso.graeshoppe.product.service.CategoryService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
+import com.diviso.graeshoppe.product.service.mapper.CategoryMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +36,9 @@ public class CategoryResource {
 
     private final CategoryService categoryService;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+    
     public CategoryResource(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
@@ -132,4 +139,11 @@ public class CategoryResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PostMapping("/category/listToDTO")
+    public List<CategoryDTO> ListToDTo(@RequestBody List<Category> categoryList){
+    	log.info("input Categories:>>>>>>>>>>>>>>>>>>>>>>>>:    "+categoryList);
+    	
+     	log.info("input CategoryDTO:>>>>>>>>>>>>>>>>>>>>>>>>:    "+categoryMapper.toDto(categoryList));
+    	return categoryMapper.toDto(categoryList);
+    }
 }

@@ -50,6 +50,8 @@ public class StockCurrentResource {
             throw new BadRequestAlertException("A new stockCurrent cannot already have an ID", ENTITY_NAME, "idexists");
         }
         StockCurrentDTO result = stockCurrentService.save(stockCurrentDTO);
+        
+        
         return ResponseEntity.created(new URI("/api/stock-currents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -116,6 +118,12 @@ public class StockCurrentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    @GetMapping("/stock-currents/product/{id}")
+    public ResponseEntity<StockCurrentDTO> getStockCurrentByProductId(@PathVariable Long id) {
+        log.debug("REST request to get StockCurrent : {}", id);
+        Optional<StockCurrentDTO> stockCurrentDTO = stockCurrentService.findByProductId(id);
+        return ResponseUtil.wrapOrNotFound(stockCurrentDTO);
+    }
     /**
      * SEARCH  /_search/stock-currents?query=:query : search for the stockCurrent corresponding
      * to the query.

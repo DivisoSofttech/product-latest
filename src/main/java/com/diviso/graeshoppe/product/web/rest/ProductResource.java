@@ -1,21 +1,29 @@
 package com.diviso.graeshoppe.product.web.rest;
+import com.diviso.graeshoppe.product.domain.Product;
 import com.diviso.graeshoppe.product.service.ProductService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
+import com.diviso.graeshoppe.product.service.mapper.ProductMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
+import net.sf.jasperreports.engine.JRException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +39,9 @@ public class ProductResource {
     private static final String ENTITY_NAME = "productProduct";
 
     private final ProductService productService;
+    
+    @Autowired
+    private ProductMapper productMapper; 
 
     public ProductResource(ProductService productService) {
         this.productService = productService;
@@ -49,7 +60,11 @@ public class ProductResource {
         if (productDTO.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ProductDTO result = productService.save(productDTO);
+        ProductDTO result1 = productService.save(productDTO);
+        if (result1.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        ProductDTO result = productService.save(result1);
         return ResponseEntity.created(new URI("/api/products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -132,4 +147,34 @@ public class ProductResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PostMapping("/products/toDto")
+    public ResponseEntity<List<ProductDTO>> listToDto(@RequestBody List<Product> products) {
+    	 log.debug("REST request to convert to DTO");
+    	List<ProductDTO> dtos = new ArrayList<>();
+    	products.forEach(a -> {dtos.add(productMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
+    
+    @GetMapping("/pdf/products-report") 
+	 public ResponseEntity<byte[]>  getProductsPriceAsPdf() {
+	 
+	  log.debug("REST request to get a pdf of products");
+	 
+	  byte[] pdfContents = null;
+	 
+	  try
+     {
+		pdfContents=productService.getProductsPriceAsPdf();
+     }catch (JRException e) {
+          e.printStackTrace();
+      }
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+       String fileName ="stock.pdf";
+		headers.add("content-disposition", "attachment; filename=" + fileName);
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(
+		            pdfContents, headers, HttpStatus.OK);	        
+      return response;
+	 }
+	
 }

@@ -6,15 +6,31 @@ import com.diviso.graeshoppe.product.repository.ProductRepository;
 import com.diviso.graeshoppe.product.repository.search.ProductSearchRepository;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import com.diviso.graeshoppe.product.service.mapper.ProductMapper;
+
+
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.sql.DataSource;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -34,6 +50,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductSearchRepository productSearchRepository;
     
 
+    @Autowired
+	DataSource dataSource;
+    
     public ProductServiceImpl( ProductRepository productRepository, ProductMapper productMapper, ProductSearchRepository productSearchRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
@@ -111,4 +130,37 @@ public class ProductServiceImpl implements ProductService {
         return productSearchRepository.search(queryStringQuery(query), pageable)
             .map(productMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.diviso.graeshoppe.product.service.ProductService#getProductsPriceAsPdf()
+	 */
+    @Override
+	public byte[] getProductsPriceAsPdf() throws JRException {
+
+		log.debug("Request to pdf of all products");
+
+		JasperReport jr = JasperCompileManager.compileReport("stock.jrxml");
+
+		// Preparing parameters
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("product", jr);
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+
+			// System.out.println(conn.getClientInfo()+"-----------------------"+conn.getMetaData().getURL()+"_________________________________");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+	
+
+		JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+
+		return JasperExportManager.exportReportToPdf(jp);
+
+	}
 }

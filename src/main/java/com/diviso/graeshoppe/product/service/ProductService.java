@@ -2,6 +2,8 @@ package com.diviso.graeshoppe.product.service;
 
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -53,4 +55,7 @@ public interface ProductService {
      * @return the list of entities
      */
     Page<ProductDTO> search(String query, Pageable pageable);
+    
+    byte[] getProductsPriceAsPdf() throws JRException;
+   
 }
