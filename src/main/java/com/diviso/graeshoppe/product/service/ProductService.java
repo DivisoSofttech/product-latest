@@ -1,11 +1,13 @@
 package com.diviso.graeshoppe.product.service;
 
+import com.diviso.graeshoppe.product.domain.Product;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 
 import net.sf.jasperreports.engine.JRException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -57,5 +59,6 @@ public interface ProductService {
     Page<ProductDTO> search(String query, Pageable pageable);
     
     byte[] getProductsPriceAsPdf() throws JRException;
+    Optional<Product> findOneWithEagerRelationships( Long id);
    
 }
