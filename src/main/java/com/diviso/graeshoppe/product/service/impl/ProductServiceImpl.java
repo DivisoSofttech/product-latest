@@ -122,10 +122,12 @@ public class ProductServiceImpl implements ProductService {
 	 *
 	 * @return the list of entities
 	 */
-	public Page<ProductDTO> findAllWithEagerRelationships(Pageable pageable) {
+/*	public Page<ProductDTO> findAllWithEagerRelationships(Pageable pageable) {
 		return productRepository.findAllWithEagerRelationships(pageable).map(productMapper::toDto);
 	}
-
+*/
+	
+	 
 	/**
 	 * Get one product by id.
 	 *

@@ -17,12 +17,12 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query(value = "select distinct product from Product product left join fetch product.labels left join fetch product.categories",
+ /*   @Query(value = "select distinct product from Product product left join fetch product.labels left join fetch product.categories",
         countQuery = "select count(distinct product) from Product product")
-    Page<Product> findAllWithEagerRelationships(Pageable pageable);
+    Page<Product> findAllWithEagerRelationships(Pageable pageable);*/
 
-    @Query(value = "select distinct product from Product product left join fetch product.labels left join fetch product.categories")
-    List<Product> findAllWithEagerRelationships();
+   /* @Query(value = "select distinct product from Product product left join fetch product.labels left join fetch product.categories")
+    List<Product> findAllWithEagerRelationships();*/
 
     /*@Query("select product from Product product left join fetch product.labels left join fetch product.categories where product.id =:id")
     Optional<Product> findOneWithEagerRelationships(@Param("id") Long id);*/
