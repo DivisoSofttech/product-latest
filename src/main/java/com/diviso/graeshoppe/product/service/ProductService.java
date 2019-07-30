@@ -59,6 +59,6 @@ public interface ProductService {
     Page<ProductDTO> search(String query, Pageable pageable);
     
     byte[] getProductsPriceAsPdf() throws JRException;
-    Optional<Product> findOneWithEagerRelationships( Long id);
+   
    
 }

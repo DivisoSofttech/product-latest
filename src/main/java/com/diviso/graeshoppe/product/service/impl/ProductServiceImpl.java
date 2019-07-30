@@ -133,13 +133,21 @@ public class ProductServiceImpl implements ProductService {
 	 *            the id of the entity
 	 * @return the entity
 	 */
-	@Override
+	/*@Override
 	@Transactional(readOnly = true)
 	public Optional<ProductDTO> findOne(Long id) {
 		log.debug("Request to get Product : {}", id);
 		return productRepository.findOneWithEagerRelationships(id).map(productMapper::toDto);
-	}
+	}*/
 
+	
+	   @Override
+	    @Transactional(readOnly = true)
+	    public Optional<ProductDTO> findOne(Long id) {
+	        log.debug("Request to get Tax : {}", id);
+	        return productRepository.findById(id)
+	            .map(productMapper::toDto);
+	    }
 	/**
 	 * Delete the product by id.
 	 *
@@ -208,5 +216,10 @@ public class ProductServiceImpl implements ProductService {
 		return JasperExportManager.exportReportToPdf(jp);
 
 	}
+
+	/* (non-Javadoc)
+	 * @see com.diviso.graeshoppe.product.service.ProductService#findOne(java.lang.Long)
+	 */
+
 
 }
