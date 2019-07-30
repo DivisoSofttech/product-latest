@@ -48,8 +48,12 @@ public class TaxServiceImpl implements TaxService {
     @Override
     public TaxDTO save(TaxDTO taxDTO) {
         log.debug("Request to save Tax : {}", taxDTO);
-        Tax tax = taxMapper.toEntity(taxDTO);
-        tax = taxRepository.save(tax);
+        
+        Tax tax1 = taxMapper.toEntity(taxDTO);
+        tax1 = taxRepository.save(tax1);
+        taxSearchRepository.save(tax1);
+        
+        Tax tax = taxRepository.save(tax1);
         TaxDTO result = taxMapper.toDto(tax);
         taxSearchRepository.save(tax);
         return result;

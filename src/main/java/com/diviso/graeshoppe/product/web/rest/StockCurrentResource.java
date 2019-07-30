@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,9 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing StockCurrent.
@@ -28,7 +32,7 @@ public class StockCurrentResource {
 
     private final Logger log = LoggerFactory.getLogger(StockCurrentResource.class);
 
-    private static final String ENTITY_NAME = "productStockCurrent";
+    private static final String ENTITY_NAME = "productmicroserviceStockCurrent";
 
     private final StockCurrentService stockCurrentService;
 
@@ -49,9 +53,11 @@ public class StockCurrentResource {
         if (stockCurrentDTO.getId() != null) {
             throw new BadRequestAlertException("A new stockCurrent cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        StockCurrentDTO result = stockCurrentService.save(stockCurrentDTO);
-        
-        
+        StockCurrentDTO result1 = stockCurrentService.save(stockCurrentDTO);
+        if (result1.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        StockCurrentDTO result = stockCurrentService.save(result1);
         return ResponseEntity.created(new URI("/api/stock-currents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,6 +79,7 @@ public class StockCurrentResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         StockCurrentDTO result = stockCurrentService.save(stockCurrentDTO);
+        result=stockCurrentService.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stockCurrentDTO.getId().toString()))
             .body(result);
@@ -82,10 +89,16 @@ public class StockCurrentResource {
      * GET  /stock-currents : get all the stockCurrents.
      *
      * @param pageable the pagination information
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of stockCurrents in body
      */
     @GetMapping("/stock-currents")
-    public ResponseEntity<List<StockCurrentDTO>> getAllStockCurrents(Pageable pageable) {
+    public ResponseEntity<List<StockCurrentDTO>> getAllStockCurrents(Pageable pageable, @RequestParam(required = false) String filter) {
+        if ("product-is-null".equals(filter)) {
+            log.debug("REST request to get all StockCurrents where product is null");
+            return new ResponseEntity<>(stockCurrentService.findAllWhereProductIsNull(),
+                    HttpStatus.OK);
+        }
         log.debug("REST request to get a page of StockCurrents");
         Page<StockCurrentDTO> page = stockCurrentService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stock-currents");
@@ -104,6 +117,18 @@ public class StockCurrentResource {
         Optional<StockCurrentDTO> stockCurrentDTO = stockCurrentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(stockCurrentDTO);
     }
+    /**
+     * GET  /stock-currents/product/:id : get the "id" stockCurrent.
+     *
+     * @param id the id of the stockCurrentDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the stockCurrentDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/stock-currents/product/{id}")
+    public ResponseEntity<StockCurrentDTO> getStockCurrentByProductId(@PathVariable Long id) {
+        log.debug("REST request to get StockCurrent : {}", id);
+        Optional<StockCurrentDTO> stockCurrentDTO = stockCurrentService.findByProductId(id);
+        return ResponseUtil.wrapOrNotFound(stockCurrentDTO);
+    }
 
     /**
      * DELETE  /stock-currents/:id : delete the "id" stockCurrent.
@@ -118,12 +143,6 @@ public class StockCurrentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/stock-currents/product/{id}")
-    public ResponseEntity<StockCurrentDTO> getStockCurrentByProductId(@PathVariable Long id) {
-        log.debug("REST request to get StockCurrent : {}", id);
-        Optional<StockCurrentDTO> stockCurrentDTO = stockCurrentService.findByProductId(id);
-        return ResponseUtil.wrapOrNotFound(stockCurrentDTO);
-    }
     /**
      * SEARCH  /_search/stock-currents?query=:query : search for the stockCurrent corresponding
      * to the query.
@@ -139,5 +158,6 @@ public class StockCurrentResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/stock-currents");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
 
 }

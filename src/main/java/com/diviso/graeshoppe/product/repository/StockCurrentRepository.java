@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StockCurrentRepository extends JpaRepository<StockCurrent, Long> {
 
-	Optional<StockCurrent> findByProduct_Id(Long productId);
+	Optional<StockCurrent> findByProductId(Long productId);
 }

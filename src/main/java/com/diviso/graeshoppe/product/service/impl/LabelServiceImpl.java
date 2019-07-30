@@ -48,10 +48,17 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public LabelDTO save(LabelDTO labelDTO) {
         log.debug("Request to save Label : {}", labelDTO);
-        Label label = labelMapper.toEntity(labelDTO);
-        label = labelRepository.save(label);
+        Label label1 = labelMapper.toEntity(labelDTO);
+        
+        label1 = labelRepository.save(label1);
+        LabelDTO result1 = labelMapper.toDto(label1);
+        labelSearchRepository.save(label1);
+        
+        Label   label = labelRepository.save(label1);
         LabelDTO result = labelMapper.toDto(label);
         labelSearchRepository.save(label);
+        
+        
         return result;
     }
 

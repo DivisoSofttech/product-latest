@@ -5,6 +5,7 @@ import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,10 +13,6 @@ import java.util.Optional;
  */
 public interface StockCurrentService {
 
-	
-	
-	Optional<StockCurrentDTO> findByProductId(Long productId) ;
-	
     /**
      * Save a stockCurrent.
      *
@@ -31,6 +28,12 @@ public interface StockCurrentService {
      * @return the list of entities
      */
     Page<StockCurrentDTO> findAll(Pageable pageable);
+    /**
+     * Get all the StockCurrentDTO where Product is null.
+     *
+     * @return the list of entities
+     */
+    List<StockCurrentDTO> findAllWhereProductIsNull();
 
 
     /**
@@ -57,4 +60,8 @@ public interface StockCurrentService {
      * @return the list of entities
      */
     Page<StockCurrentDTO> search(String query, Pageable pageable);
+
+	Optional<StockCurrentDTO> findByProductId(Long id);
+	 StockCurrentDTO updateStockCurrent(StockCurrentDTO stockCurrentDTO);
+
 }

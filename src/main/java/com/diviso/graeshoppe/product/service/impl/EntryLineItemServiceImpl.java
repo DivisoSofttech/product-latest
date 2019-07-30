@@ -85,8 +85,13 @@ public class EntryLineItemServiceImpl implements EntryLineItemService {
 			lineItem.get().setSellPrice(priceAdjusted);
 			stockCurrentService.save(lineItem.get());
 		}
-		EntryLineItem entryLineItem = entryLineItemMapper.toEntity(entryLineItemDTO);
-		entryLineItem = entryLineItemRepository.save(entryLineItem);
+		EntryLineItem entryLineItem1 = entryLineItemMapper.toEntity(entryLineItemDTO);
+		entryLineItem1 = entryLineItemRepository.save(entryLineItem1);
+		EntryLineItemDTO result1 = entryLineItemMapper.toDto(entryLineItem1);
+		entryLineItemSearchRepository.save(entryLineItem1);
+		
+		
+		EntryLineItem entryLineItem = entryLineItemRepository.save(entryLineItem1);
 		EntryLineItemDTO result = entryLineItemMapper.toDto(entryLineItem);
 		entryLineItemSearchRepository.save(entryLineItem);
 		return result;

@@ -48,8 +48,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public SupplierDTO save(SupplierDTO supplierDTO) {
         log.debug("Request to save Supplier : {}", supplierDTO);
-        Supplier supplier = supplierMapper.toEntity(supplierDTO);
-        supplier = supplierRepository.save(supplier);
+        Supplier supplier1 = supplierMapper.toEntity(supplierDTO);
+        
+        supplier1 = supplierRepository.save(supplier1);
+        supplierSearchRepository.save(supplier1);
+        
+        Supplier supplier = supplierRepository.save(supplier1);
         SupplierDTO result = supplierMapper.toDto(supplier);
         supplierSearchRepository.save(supplier);
         return result;

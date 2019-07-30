@@ -48,8 +48,13 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDTO save(LocationDTO locationDTO) {
         log.debug("Request to save Location : {}", locationDTO);
-        Location location = locationMapper.toEntity(locationDTO);
-        location = locationRepository.save(location);
+        Location location1 = locationMapper.toEntity(locationDTO);
+        
+        location1 = locationRepository.save(location1);
+        locationSearchRepository.save(location1);
+        
+
+        Location location = locationRepository.save(location1);
         LocationDTO result = locationMapper.toDto(location);
         locationSearchRepository.save(location);
         return result;

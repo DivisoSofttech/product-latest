@@ -48,8 +48,12 @@ public class ComboLineItemServiceImpl implements ComboLineItemService {
     @Override
     public ComboLineItemDTO save(ComboLineItemDTO comboLineItemDTO) {
         log.debug("Request to save ComboLineItem : {}", comboLineItemDTO);
-        ComboLineItem comboLineItem = comboLineItemMapper.toEntity(comboLineItemDTO);
-        comboLineItem = comboLineItemRepository.save(comboLineItem);
+        ComboLineItem comboLineItem1 = comboLineItemMapper.toEntity(comboLineItemDTO);
+        
+        comboLineItem1 = comboLineItemRepository.save(comboLineItem1);
+        comboLineItemSearchRepository.save(comboLineItem1);
+        
+        ComboLineItem comboLineItem = comboLineItemRepository.save(comboLineItem1);
         ComboLineItemDTO result = comboLineItemMapper.toDto(comboLineItem);
         comboLineItemSearchRepository.save(comboLineItem);
         return result;

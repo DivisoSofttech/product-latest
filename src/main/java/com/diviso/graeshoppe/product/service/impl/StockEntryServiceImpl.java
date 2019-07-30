@@ -48,10 +48,15 @@ public class StockEntryServiceImpl implements StockEntryService {
     @Override
     public StockEntryDTO save(StockEntryDTO stockEntryDTO) {
         log.debug("Request to save StockEntry : {}", stockEntryDTO);
-        StockEntry stockEntry = stockEntryMapper.toEntity(stockEntryDTO);
-        stockEntry = stockEntryRepository.save(stockEntry);
+        StockEntry stockEntry1 = stockEntryMapper.toEntity(stockEntryDTO);
+        
+        stockEntry1 = stockEntryRepository.save(stockEntry1);
+        stockEntrySearchRepository.save(stockEntry1);
+        
+        StockEntry stockEntry = stockEntryRepository.save(stockEntry1);
         StockEntryDTO result = stockEntryMapper.toDto(stockEntry);
         stockEntrySearchRepository.save(stockEntry);
+        
         return result;
     }
 

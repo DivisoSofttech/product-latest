@@ -48,10 +48,12 @@ public class TaxCategoryServiceImpl implements TaxCategoryService {
     @Override
     public TaxCategoryDTO save(TaxCategoryDTO taxCategoryDTO) {
         log.debug("Request to save TaxCategory : {}", taxCategoryDTO);
-        TaxCategory taxCategory = taxCategoryMapper.toEntity(taxCategoryDTO);
-        taxCategory = taxCategoryRepository.save(taxCategory);
-        TaxCategoryDTO result = taxCategoryMapper.toDto(taxCategory);
-        taxCategorySearchRepository.save(taxCategory);
+        TaxCategory taxCategory1 = taxCategoryMapper.toEntity(taxCategoryDTO);
+        
+        taxCategory1 = taxCategoryRepository.save(taxCategory1);
+        TaxCategoryDTO result = taxCategoryMapper.toDto(taxCategory1);
+        taxCategorySearchRepository.save(taxCategory1);
+        
         return result;
     }
 
