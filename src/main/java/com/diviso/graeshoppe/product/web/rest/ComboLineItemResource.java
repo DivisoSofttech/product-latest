@@ -1,12 +1,18 @@
 package com.diviso.graeshoppe.product.web.rest;
+import com.diviso.graeshoppe.product.domain.AuxilaryLineItem;
+import com.diviso.graeshoppe.product.domain.ComboLineItem;
 import com.diviso.graeshoppe.product.service.ComboLineItemService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+import com.diviso.graeshoppe.product.service.dto.AuxilaryLineItemDTO;
 import com.diviso.graeshoppe.product.service.dto.ComboLineItemDTO;
+import com.diviso.graeshoppe.product.service.mapper.ComboLineItemMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +38,9 @@ public class ComboLineItemResource {
 
     private final ComboLineItemService comboLineItemService;
 
+    @Autowired
+    ComboLineItemMapper comboLineItemMapper;
+    
     public ComboLineItemResource(ComboLineItemService comboLineItemService) {
         this.comboLineItemService = comboLineItemService;
     }
@@ -132,4 +141,13 @@ public class ComboLineItemResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PostMapping("/combo-line-items/toDto")
+   	public ResponseEntity<List<ComboLineItemDTO>> listToDto(@RequestBody List<ComboLineItem> comboLineItem) {
+   		log.debug("REST request to convert to DTO");
+   		List<ComboLineItemDTO> dtos = new ArrayList<ComboLineItemDTO>();
+   		comboLineItem.forEach(a -> {
+   			dtos.add(comboLineItemMapper.toDto(a));
+   		});
+   		return ResponseEntity.ok().body(dtos);
+   	}
 }
