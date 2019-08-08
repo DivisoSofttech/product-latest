@@ -86,8 +86,6 @@ public class ProductResource {
 		}
 		ProductDTO result = productService.save(result1);
 
-		stockCurrentService.save(stockCurrent);
-
 		return ResponseEntity.created(new URI("/api/products/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
