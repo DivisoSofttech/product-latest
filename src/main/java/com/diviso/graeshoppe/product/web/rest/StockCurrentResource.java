@@ -71,7 +71,7 @@ public class StockCurrentResource {
      * or with status 400 (Bad Request) if the stockCurrentDTO is not valid,
      * or with status 500 (Internal Server Error) if the stockCurrentDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
+     */   
     @PutMapping("/stock-currents")
     public ResponseEntity<StockCurrentDTO> updateStockCurrent(@RequestBody StockCurrentDTO stockCurrentDTO) throws URISyntaxException {
         log.debug("REST request to update StockCurrent : {}", stockCurrentDTO);

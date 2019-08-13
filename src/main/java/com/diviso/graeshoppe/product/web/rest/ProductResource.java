@@ -78,13 +78,17 @@ public class ProductResource {
 		}
 
 		ProductDTO result1 = productService.save(productDTO);
-
-		stockCurrentService.save(stockCurrent);
+		
+		stockCurrent.setProductId(result1.getId());
+		
+		stockCurrent= stockCurrentService.save(stockCurrent);
 
 		if (result1.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
 		ProductDTO result = productService.save(result1);
+
+		stockCurrentService.save(stockCurrent);
 
 		return ResponseEntity.created(new URI("/api/products/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
