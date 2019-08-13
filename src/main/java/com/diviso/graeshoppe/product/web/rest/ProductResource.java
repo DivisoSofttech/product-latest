@@ -71,6 +71,7 @@ public class ProductResource {
 
 		StockCurrentDTO stockCurrent = new StockCurrentDTO();
 
+		
 		stockCurrent.setSellPrice(productDTO.getSellingPrice());
 
 		if (productDTO.getId() != null) {
@@ -78,6 +79,8 @@ public class ProductResource {
 		}
 
 		ProductDTO result1 = productService.save(productDTO);
+		
+		stockCurrent.setiDPcode(result1.getiDPcode());
 		
 		stockCurrent.setProductId(result1.getId());
 		
