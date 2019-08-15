@@ -3,7 +3,7 @@
         "properties": {
             "name": {
                 "type": "text",
-                "analyzer": "index_analyzer",
+                "analyzer": "category_analyzer",
   				"search_analyzer": "simple"
             }
         }

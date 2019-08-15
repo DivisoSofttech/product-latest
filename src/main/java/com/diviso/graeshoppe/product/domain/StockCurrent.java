@@ -21,8 +21,6 @@ import java.util.Objects;
 @Table(name = "stock_current")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "stockcurrent")
-@Setting(settingPath = "settings/indexsettings.json")
-@Mapping(mappingPath = "mappings/stockcurrentmappings.json") 
 public class StockCurrent implements Serializable {
 
     private static final long serialVersionUID = 1L;
