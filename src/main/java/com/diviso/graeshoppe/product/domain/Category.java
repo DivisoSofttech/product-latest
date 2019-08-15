@@ -22,8 +22,7 @@ import java.util.Objects;
 @Table(name = "category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "category")
-@Setting(settingPath = "settings/productsettings.json")
-@Mapping(mappingPath = "mappings/categorymappings.json") 
+
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
