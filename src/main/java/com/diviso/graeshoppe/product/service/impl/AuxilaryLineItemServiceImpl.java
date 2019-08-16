@@ -60,11 +60,11 @@ public class AuxilaryLineItemServiceImpl implements AuxilaryLineItemService {
 		AuxilaryLineItemDTO result1 = auxilaryLineItemMapper.toDto(auxilaryLineItem1);
 		auxilaryLineItemSearchRepository.save(auxilaryLineItem1);
         
-        log.debug("Request to save result1 : {}", result1);
+        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Request to save result1 : {}", result1);
 		
         auxilaryLineItem1 = auxilaryLineItemMapper.toEntity(result1);
 		auxilaryLineItem1 = auxilaryLineItemRepository.save(auxilaryLineItem1);
-         log.debug("Request to save auxilaryLineItem1 : {}", auxilaryLineItem1);       
+         log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Request to save auxilaryLineItem1 : {}", auxilaryLineItem1);       
         
 		AuxilaryLineItemDTO result = auxilaryLineItemMapper.toDto(auxilaryLineItem1);
 		auxilaryLineItemRepository.save(auxilaryLineItem1);
