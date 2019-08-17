@@ -72,7 +72,7 @@ public class AuxilaryLineItemDTO implements Serializable {
 			return false;
 		}
 		
-		return (auxilaryLineItemDTO.getProductId().equals(getProductId()))
+		return !(auxilaryLineItemDTO.getProductId().equals(getProductId()))
 				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId()));
 	}
 
