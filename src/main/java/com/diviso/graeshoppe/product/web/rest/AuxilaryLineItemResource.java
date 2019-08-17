@@ -69,7 +69,7 @@ public class AuxilaryLineItemResource {
 
 		List<AuxilaryLineItemDTO> auxlines = auxilaryLineItemService.findAll();
 
-		
+		log.info(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,         :::::::::::"+auxlines);
 		auxlines.forEach(auxline -> {
 			
 			if(auxline.equals(auxilaryLineItemDTO)){
