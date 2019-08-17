@@ -1,6 +1,9 @@
 package com.diviso.graeshoppe.product.repository;
 
 import com.diviso.graeshoppe.product.domain.AuxilaryLineItem;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuxilaryLineItemRepository extends JpaRepository<AuxilaryLineItem, Long> {
 
+	List<AuxilaryLineItem> findAll();
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -123,5 +124,14 @@ public class AuxilaryLineItemServiceImpl implements AuxilaryLineItemService {
 		log.debug("Request to search for a page of AuxilaryLineItems for query {}", query);
 		return auxilaryLineItemSearchRepository.search(queryStringQuery(query), pageable)
 				.map(auxilaryLineItemMapper::toDto);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.diviso.graeshoppe.product.service.AuxilaryLineItemService#findAll()
+	 */
+	@Override
+	public List<AuxilaryLineItemDTO> findAll() {
+		
+		return auxilaryLineItemMapper.toDto(auxilaryLineItemRepository.findAll());
 	}
 }

@@ -114,6 +114,7 @@ public class AuxilaryLineItem implements Serializable {
         if (auxilaryLineItem.getId() == null || getId() == null) {
             return false;
         }
+       
         return Objects.equals(getId(), auxilaryLineItem.getId());
     }
 

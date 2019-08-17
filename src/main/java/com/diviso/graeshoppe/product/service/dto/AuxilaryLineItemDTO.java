@@ -1,4 +1,5 @@
 package com.diviso.graeshoppe.product.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,86 +8,84 @@ import java.util.Objects;
  */
 public class AuxilaryLineItemDTO implements Serializable {
 
-    private Long id;
+	private Long id;
 
-    private String description;
+	private String description;
 
-    private Double quantity;
+	private Double quantity;
 
+	private Long productId;
 
-    private Long productId;
+	private Long auxilaryItemId;
 
-    private Long auxilaryItemId;
+	public Long getId() {
+		return id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public Double getQuantity() {
+		return quantity;
+	}
 
-    public Double getQuantity() {
-        return quantity;
-    }
+	public void setQuantity(Double quantity) {
+		this.quantity = quantity;
+	}
 
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
+	public Long getProductId() {
+		return productId;
+	}
 
-    public Long getProductId() {
-        return productId;
-    }
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
+	public Long getAuxilaryItemId() {
+		return auxilaryItemId;
+	}
 
-    public Long getAuxilaryItemId() {
-        return auxilaryItemId;
-    }
+	public void setAuxilaryItemId(Long productId) {
+		this.auxilaryItemId = productId;
+	}
 
-    public void setAuxilaryItemId(Long productId) {
-        this.auxilaryItemId = productId;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+		AuxilaryLineItemDTO auxilaryLineItemDTO = (AuxilaryLineItemDTO) o;
+		if (auxilaryLineItemDTO.getId() == null || getId() == null) {
+			return false;
+		}
+		if ((auxilaryLineItemDTO.getProductId().equals(getProductId()))
+				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId()))) {
+			return false;
+		}
+		return Objects.equals(getId(), auxilaryLineItemDTO.getId());
+	}
 
-        AuxilaryLineItemDTO auxilaryLineItemDTO = (AuxilaryLineItemDTO) o;
-        if (auxilaryLineItemDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), auxilaryLineItemDTO.getId());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "AuxilaryLineItemDTO{" +
-            "id=" + getId() +
-            ", description='" + getDescription() + "'" +
-            ", quantity=" + getQuantity() +
-            ", product=" + getProductId() +
-            ", auxilaryItem=" + getAuxilaryItemId() +
-            "}";
-    }
+	@Override
+	public String toString() {
+		return "AuxilaryLineItemDTO{" + "id=" + getId() + ", description='" + getDescription() + "'" + ", quantity="
+				+ getQuantity() + ", product=" + getProductId() + ", auxilaryItem=" + getAuxilaryItemId() + "}";
+	}
 }
