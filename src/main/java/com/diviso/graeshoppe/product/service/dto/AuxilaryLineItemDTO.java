@@ -71,11 +71,9 @@ public class AuxilaryLineItemDTO implements Serializable {
 		if (auxilaryLineItemDTO.getId() == null || getId() == null) {
 			return false;
 		}
-		if ((auxilaryLineItemDTO.getProductId().equals(getProductId()))
-				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId()))) {
-			return false;
-		}
-		return Objects.equals(getId(), auxilaryLineItemDTO.getId());
+		
+		return (auxilaryLineItemDTO.getProductId().equals(getProductId()))
+				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId()));
 	}
 
 	@Override
