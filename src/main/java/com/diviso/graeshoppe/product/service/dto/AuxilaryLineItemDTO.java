@@ -68,9 +68,7 @@ public class AuxilaryLineItemDTO implements Serializable {
 		}
 
 		AuxilaryLineItemDTO auxilaryLineItemDTO = (AuxilaryLineItemDTO) o;
-		if (auxilaryLineItemDTO.getId() == null || getId() == null) {
-			return false;
-		}
+		
 		System.out.println(((auxilaryLineItemDTO.getProductId().equals(getProductId()))
 				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId())))+"..........boolean check equals..............");
 		
