@@ -41,7 +41,7 @@ public class StockEntry implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "stockEntry")
+    @OneToMany(mappedBy = "stockEntry",cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<EntryLineItem> entryLineItems = new HashSet<>();
     @ManyToOne

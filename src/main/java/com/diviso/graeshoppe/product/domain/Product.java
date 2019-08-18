@@ -79,13 +79,13 @@ public class Product implements Serializable {
     @Column(name = "buy_price")
     private Double buyPrice;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AuxilaryLineItem> auxilaryLineItems = new HashSet<>();
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ComboLineItem> comboLineItems = new HashSet<>();
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Label> labels = new HashSet<>();
     @ManyToOne
