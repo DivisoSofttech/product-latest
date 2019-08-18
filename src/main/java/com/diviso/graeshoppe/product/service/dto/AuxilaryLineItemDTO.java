@@ -58,23 +58,21 @@ public class AuxilaryLineItemDTO implements Serializable {
 		this.auxilaryItemId = productId;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-		AuxilaryLineItemDTO auxilaryLineItemDTO = (AuxilaryLineItemDTO) o;
-		
-		System.out.println(((auxilaryLineItemDTO.getProductId().equals(getProductId()))
-				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId())))+"..........boolean check equals..............");
-		
-		return !((auxilaryLineItemDTO.getProductId().equals(getProductId()))
-				&& (auxilaryLineItemDTO.getAuxilaryItemId().equals(getAuxilaryItemId())));
-	}
+        AuxilaryLineItemDTO auxilaryLineItemDTO = (AuxilaryLineItemDTO) o;
+        if (auxilaryLineItemDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), auxilaryLineItemDTO.getId());
+    }
 
 	@Override
 	public int hashCode() {
