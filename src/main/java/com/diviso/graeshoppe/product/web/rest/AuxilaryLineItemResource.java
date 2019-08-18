@@ -62,23 +62,7 @@ public class AuxilaryLineItemResource {
 	public ResponseEntity<AuxilaryLineItemDTO> createAuxilaryLineItem(
 			@RequestBody AuxilaryLineItemDTO auxilaryLineItemDTO) throws URISyntaxException {
 		log.debug("REST request to save AuxilaryLineItem : {}", auxilaryLineItemDTO);
-		if (auxilaryLineItemDTO.getId() != null) {
-			throw new BadRequestAlertException("A new auxilaryLineItem cannot already have an ID", ENTITY_NAME,
-					"idexists");
-		}
-
-		List<AuxilaryLineItemDTO> auxlines = auxilaryLineItemService.findAll();
-
-		log.info(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,         :::::::::::"+auxlines);
-		auxlines.forEach(auxline -> {
-			
-			if(auxline.equals(auxilaryLineItemDTO)){
-				throw new BadRequestAlertException("same productid and auxilaryitemid", ENTITY_NAME,
-						"same productid and auxilaryitemid");
-			}
-			
-		});
-
+		
 		AuxilaryLineItemDTO result = auxilaryLineItemService.save(auxilaryLineItemDTO);
 		return ResponseEntity.created(new URI("/api/auxilary-line-items/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
