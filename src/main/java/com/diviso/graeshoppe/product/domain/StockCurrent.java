@@ -41,7 +41,7 @@ public class StockCurrent implements Serializable {
     @Column(name = "notes")
     private String notes;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnoreProperties("stockCurrents")
     private Product product;
 
