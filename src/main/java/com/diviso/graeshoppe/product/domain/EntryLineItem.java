@@ -35,11 +35,11 @@ public class EntryLineItem implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("entryLineItems")
     private StockEntry stockEntry;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("entryLineItems")
     private Product product;
 
