@@ -6,6 +6,7 @@ import com.diviso.graeshoppe.product.service.AuxilaryLineItemService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+
 import com.diviso.graeshoppe.product.service.dto.AuxilaryLineItemDTO;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import com.diviso.graeshoppe.product.service.mapper.AuxilaryLineItemMapper;
@@ -59,14 +60,19 @@ public class AuxilaryLineItemResource {
 	 *             if the Location URI syntax is incorrect
 	 */
 	@PostMapping("/auxilary-line-items")
-	public ResponseEntity<AuxilaryLineItemDTO> createAuxilaryLineItem(
-			@RequestBody AuxilaryLineItemDTO auxilaryLineItemDTO) throws URISyntaxException {
-		log.debug("REST request to save AuxilaryLineItem : {}", auxilaryLineItemDTO);
-		
-		AuxilaryLineItemDTO result = auxilaryLineItemService.save(auxilaryLineItemDTO);
-		return ResponseEntity.created(new URI("/api/auxilary-line-items/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
-	}
+	public ResponseEntity<AuxilaryLineItemDTO> createAuxilaryLineItem(@RequestBody AuxilaryLineItemDTO auxilaryLineItemDTO) throws URISyntaxException {
+	        log.debug("REST request to save Banner : {}", auxilaryLineItemDTO);
+	        if (auxilaryLineItemDTO.getId() != null) {
+	            throw new BadRequestAlertException("A new banner cannot already have an ID", ENTITY_NAME, "idexists");
+	        }
+	        AuxilaryLineItemDTO result1 = auxilaryLineItemService.save(auxilaryLineItemDTO);
+			if (result1.getId() == null) {
+				throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+			}
+			AuxilaryLineItemDTO result = auxilaryLineItemService.save(result1);
+	        return ResponseEntity.created(new URI("/api/auxilary-line-items/" + result.getId()))
+	            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+	            .body(result);	}
 
 	/**
 	 * PUT /auxilary-line-items : Updates an existing auxilaryLineItem.
