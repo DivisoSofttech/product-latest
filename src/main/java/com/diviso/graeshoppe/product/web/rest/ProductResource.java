@@ -81,7 +81,7 @@ public class ProductResource {
 		ProductDTO result1 = productService.save(productDTO);
 		
 		stockCurrent.setiDPcode(result1.getiDPcode());
-		
+		stockCurrent.setQuantity(0.0);
 		stockCurrent.setProductId(result1.getId());
 		
 		stockCurrent= stockCurrentService.save(stockCurrent);
