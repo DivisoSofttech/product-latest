@@ -15,7 +15,7 @@
 	</style>
 	<parameter name="i_d_pcode" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[select  productlatest.product.name ,  productlatest.product.selling_price  from  productlatest.product  where  productlatest.product.i_d_pcode =  $P{i_d_pcode}  ]]>
+		<![CDATA[select  productlatest.product.name ,  productlatest.product.selling_price  from  productlatest.product  where  productlatest.product.i_d_pcode =  $P{i_d_pcode}]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="name"/>

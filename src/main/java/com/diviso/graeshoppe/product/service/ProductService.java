@@ -62,7 +62,6 @@ public interface ProductService {
 
 	byte[] exportProductListAsPdf(String idpcode) throws JRException;
 
-	byte[] exportCategoryListAsPdf(String idpcode) throws JRException;
-   
+
    
 }

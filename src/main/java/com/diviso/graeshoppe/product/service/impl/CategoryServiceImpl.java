@@ -6,15 +6,27 @@ import com.diviso.graeshoppe.product.repository.CategoryRepository;
 import com.diviso.graeshoppe.product.repository.search.CategorySearchRepository;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.mapper.CategoryMapper;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.sql.DataSource;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -24,6 +36,11 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Service
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
+	
+	
+	@Autowired
+	DataSource dataSource;
+	
 
     private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
@@ -110,4 +127,33 @@ public class CategoryServiceImpl implements CategoryService {
         return categorySearchRepository.search(queryStringQuery(query), pageable)
             .map(categoryMapper::toDto);
     }
+    
+    @Override
+	public byte[] exportCategoryListAsPdf(String idpcode) throws JRException {
+		
+
+		log.debug("Request to pdf of all category list");
+
+		//JasperReport jr = JasperCompileManager.compileReport("category.jrxml");
+
+		// Preparing parameters
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("i_d_pcode", idpcode);
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+
+			// System.out.println(conn.getClientInfo()+"-----------------------"+conn.getMetaData().getURL()+"_________________________________");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		JasperPrint jp = JasperFillManager.fillReport("src/main/resources/report/category.jasper", parameters, conn);
+
+		return JasperExportManager.exportReportToPdf(jp);
+	}
+    
 }

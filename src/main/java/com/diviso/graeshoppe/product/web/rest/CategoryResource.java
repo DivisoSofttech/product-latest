@@ -8,12 +8,16 @@ import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.mapper.CategoryMapper;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import net.sf.jasperreports.engine.JRException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -146,4 +150,26 @@ public class CategoryResource {
      	log.info("input CategoryDTO:>>>>>>>>>>>>>>>>>>>>>>>>:    "+categoryMapper.toDto(categoryList));
     	return categoryMapper.toDto(categoryList);
     }
+    
+    
+    @GetMapping("/pdf/category-report/{idpcode}")
+	public ResponseEntity<byte[]> exportCategoryListAsPdf(@PathVariable String idpcode) {
+
+		log.debug("REST request to get a pdf of products");
+
+		byte[] pdfContents = null;
+
+		try {
+			pdfContents = categoryService.exportCategoryListAsPdf(idpcode);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		String fileName = "category.pdf";
+		headers.add("content-disposition", "attachment; filename=" + fileName);
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
+		return response;
+	}
+    
 }

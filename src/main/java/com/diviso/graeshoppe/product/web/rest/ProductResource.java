@@ -222,7 +222,7 @@ public class ProductResource {
 	}
 
 	
-	@GetMapping("/pdf/products-report/idpcode")
+	@GetMapping("/pdf/products-report/{idpcode}")
 	public ResponseEntity<byte[]> exportProductListAsPdf(@PathVariable String idpcode) {
 
 		log.debug("REST request to get a pdf of products");
@@ -243,24 +243,6 @@ public class ProductResource {
 	}
 	
 	
-	@GetMapping("/pdf/category-report/idpcode")
-	public ResponseEntity<byte[]> exportCategoryListAsPdf(@PathVariable String idpcode) {
-
-		log.debug("REST request to get a pdf of products");
-
-		byte[] pdfContents = null;
-
-		try {
-			pdfContents = productService.exportCategoryListAsPdf(idpcode);
-		} catch (JRException e) {
-			e.printStackTrace();
-		}
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("application/pdf"));
-		String fileName = "product.pdf";
-		headers.add("content-disposition", "attachment; filename=" + fileName);
-		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
-		return response;
-	}
+	
 	
 }

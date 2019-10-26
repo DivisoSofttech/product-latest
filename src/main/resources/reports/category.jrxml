@@ -15,7 +15,7 @@
 	</style>
 	<parameter name="i_d_pcode" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * from  productlatest.category  where  productlatest.category.i_d_pcode =  $P{i_d_pcode} ]]>
+		<![CDATA[SELECT * from  productlatest.category  where  productlatest.category.i_d_pcode =  $P{i_d_pcode}]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="name"/>
@@ -105,7 +105,7 @@ Category]]></text>
 				</textField>
 			</frame>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="-3" y="3" width="109" height="17" uuid="3e8fb88f-83de-42c2-845b-8ba4a1c3579d"/>
+				<reportElement positionType="Float" x="1" y="3" width="109" height="17" uuid="3e8fb88f-83de-42c2-845b-8ba4a1c3579d"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
