@@ -9,9 +9,14 @@ import com.diviso.graeshoppe.product.service.mapper.StockCurrentMapper;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +25,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.sql.DataSource;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -37,6 +48,9 @@ public class StockCurrentServiceImpl implements StockCurrentService {
 
     private final Logger log = LoggerFactory.getLogger(StockCurrentServiceImpl.class);
 
+    @Autowired
+    DataSource dataSource;
+    
     private final StockCurrentRepository stockCurrentRepository;
 
     private final StockCurrentMapper stockCurrentMapper;
@@ -162,6 +176,32 @@ public class StockCurrentServiceImpl implements StockCurrentService {
 		 * stockCurrentDTO.getId().toString())) .body(result);
 		 */
 	    }
+
+	@Override
+	public byte[] exportStockCurrentAsPdf(String idpcode) throws JRException {
+		log.debug("Request to pdf of all products list");
+
+		//JasperReport jr = JasperCompileManager.compileReport("product.jrxml");
+
+		// Preparing parameters
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("i_d_pcode", idpcode);
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+
+			// System.out.println(conn.getClientInfo()+"-----------------------"+conn.getMetaData().getURL()+"_________________________________");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		JasperPrint jp = JasperFillManager.fillReport("src/main/resources/report/stockcurrent.jasper", parameters, conn);
+
+		return JasperExportManager.exportReportToPdf(jp);
+	}
 
 	
 	

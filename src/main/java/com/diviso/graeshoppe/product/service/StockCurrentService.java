@@ -2,6 +2,8 @@ package com.diviso.graeshoppe.product.service;
 
 import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -63,5 +65,7 @@ public interface StockCurrentService {
 
 	Optional<StockCurrentDTO> findByProductId(Long id);
 	 StockCurrentDTO updateStockCurrent(StockCurrentDTO stockCurrentDTO);
+
+	byte[] exportStockCurrentAsPdf(String idpcode) throws JRException;
 
 }

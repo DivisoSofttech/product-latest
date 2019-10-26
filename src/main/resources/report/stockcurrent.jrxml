@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stock" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (16)"/>
@@ -13,16 +13,9 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
+	<parameter name="i_d_pcode" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT productmicroservice.product.name,
-	productmicroservice.stock_diary.price,
-	productmicroservice.stock_current.sell_price,
-	productmicroservice.stock_current.units
-FROM productmicroservice.product
-	INNER JOIN productmicroservice.stock_diary ON 
-	 productmicroservice.product.id = productmicroservice.stock_diary.product_id 
-	INNER JOIN productmicroservice.stock_current ON 
-	 productmicroservice.product.id = productmicroservice.stock_current.product_id]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="name"/>
@@ -56,7 +49,7 @@ FROM productmicroservice.product
 					<textElement>
 						<font fontName="SansSerif" size="50" isBold="true" isItalic="false"/>
 					</textElement>
-					<text><![CDATA[Stock]]></text>
+					<text><![CDATA[Stock Current]]></text>
 				</staticText>
 			</frame>
 			<frame>
