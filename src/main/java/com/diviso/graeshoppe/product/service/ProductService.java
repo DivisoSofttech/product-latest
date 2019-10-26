@@ -59,6 +59,10 @@ public interface ProductService {
     Page<ProductDTO> search(String query, Pageable pageable);
     
     byte[] getProductsPriceAsPdf() throws JRException;
+
+	byte[] exportProductListAsPdf(String idpcode) throws JRException;
+
+	byte[] exportCategoryListAsPdf(String idpcode) throws JRException;
    
    
 }

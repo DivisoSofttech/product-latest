@@ -219,6 +219,63 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+	@Override
+	public byte[] exportProductListAsPdf(String idpcode) throws JRException {
+		
+		log.debug("Request to pdf of all products list");
+
+		JasperReport jr = JasperCompileManager.compileReport("product.jrxml");
+
+		// Preparing parameters
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("i_d_pcode", idpcode);
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+
+			// System.out.println(conn.getClientInfo()+"-----------------------"+conn.getMetaData().getURL()+"_________________________________");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+
+		return JasperExportManager.exportReportToPdf(jp);
+
+	
+	}
+
+	@Override
+	public byte[] exportCategoryListAsPdf(String idpcode) throws JRException {
+		
+
+		log.debug("Request to pdf of all category list");
+
+		JasperReport jr = JasperCompileManager.compileReport("category.jrxml");
+
+		// Preparing parameters
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("i_d_pcode", idpcode);
+
+		Connection conn = null;
+
+		try {
+			conn = dataSource.getConnection();
+
+			// System.out.println(conn.getClientInfo()+"-----------------------"+conn.getMetaData().getURL()+"_________________________________");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		JasperPrint jp = JasperFillManager.fillReport(jr, parameters, conn);
+
+		return JasperExportManager.exportReportToPdf(jp);
+	}
+
 	/* (non-Javadoc)
 	 * @see com.diviso.graeshoppe.product.service.ProductService#findOne(java.lang.Long)
 	 */
