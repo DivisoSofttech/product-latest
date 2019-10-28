@@ -161,10 +161,13 @@ public class StockCurrentResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/stock-currents");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    
+    
     @GetMapping("/pdf/stockcurrent-report/{idpcode}")
    	public ResponseEntity<byte[]> exportStockCurrentListAsPdf(@PathVariable String idpcode) {
 
-   		log.debug("REST request to get a pdf of products");
+   		log.debug("REST request to get a pdf of stock current");
 
    		byte[] pdfContents = null;
 
@@ -175,7 +178,7 @@ public class StockCurrentResource {
    		}
    		HttpHeaders headers = new HttpHeaders();
    		headers.setContentType(MediaType.parseMediaType("application/pdf"));
-   		String fileName = "category.pdf";
+   		String fileName = "stockcurrent.pdf";
    		headers.add("content-disposition", "attachment; filename=" + fileName);
    		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
    		return response;

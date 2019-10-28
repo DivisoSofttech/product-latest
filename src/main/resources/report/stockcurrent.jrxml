@@ -3,6 +3,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stock" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (16)"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="103"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="891"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -15,22 +17,22 @@
 	</style>
 	<parameter name="i_d_pcode" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[]]>
+		<![CDATA[select  productlatest.product.name ,  productlatest.product.buy_price  ,productlatest.stock_current.quantity ,  productlatest.stock_current.sell_price  from  productlatest.product ,  productlatest.stock_current where  productlatest.product.id =  productlatest.stock_current.product_id and   productlatest.stock_current.i_d_pcode =  $P{i_d_pcode} ]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="name"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
 	</field>
-	<field name="price" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="price"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="stock_diary"/>
+	<field name="buy_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="buy_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
+	</field>
+	<field name="quantity" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="stock_current"/>
 	</field>
 	<field name="sell_price" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="sell_price"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="stock_current"/>
-	</field>
-	<field name="units" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="units"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="stock_current"/>
 	</field>
 	<background>
@@ -121,15 +123,6 @@
 					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="138" y="0" width="138" height="18" uuid="b098e227-9931-4abb-a352-b97ac5461ea6">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="486353b1-3dab-4126-950d-081c0b7788d7"/>
-					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="276" y="0" width="138" height="18" uuid="187d8e16-1bdd-42db-a6c2-5429170eaeb9">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="75c382e4-53e1-4eff-8f33-648fae5d88cb"/>
 					</reportElement>
@@ -139,13 +132,22 @@
 					<textFieldExpression><![CDATA[$F{sell_price}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="414" y="0" width="138" height="18" uuid="db05070a-976f-40dc-b936-619fa6840d17">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9c3fa8d2-3d20-4fc1-8322-ab4020de468c"/>
+					<reportElement positionType="Float" x="416" y="-1" width="100" height="19" uuid="6bb0d934-a828-40b7-96a0-2e6c0a1efb5c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d76ddbf6-a5e1-43c6-93ca-c2251f61e99f"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="12"/>
+					<textElement>
+						<font size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{units}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement positionType="Float" x="139" y="2" width="131" height="16" uuid="e687b61d-a5ae-48c0-8809-e6bbc58399b0">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f0223715-592c-41dd-a2a8-dea99976fea0"/>
+					</reportElement>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{buy_price}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

@@ -179,7 +179,7 @@ public class StockCurrentServiceImpl implements StockCurrentService {
 
 	@Override
 	public byte[] exportStockCurrentAsPdf(String idpcode) throws JRException {
-		log.debug("Request to pdf of all products list");
+		log.debug("Request to pdf of all stock current list");
 
 		//JasperReport jr = JasperCompileManager.compileReport("product.jrxml");
 
