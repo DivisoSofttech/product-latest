@@ -15,23 +15,11 @@
 	</style>
 	<parameter name="i_d_pcode" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * from  productlatest.category  where  productlatest.category.i_d_pcode =  $P{i_d_pcode}]]>
+		<![CDATA[SELECT productlatest.category.name  from  productlatest.category  where  productlatest.category.i_d_pcode =  $P{i_d_pcode}]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
-	</field>
-	<field name="price" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="price"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="stock_diary"/>
-	</field>
-	<field name="sell_price" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="sell_price"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="stock_current"/>
-	</field>
-	<field name="units" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="units"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="stock_current"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="category"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
