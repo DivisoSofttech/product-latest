@@ -221,4 +221,28 @@ public class ProductResource {
 		return response;
 	}
 
+	
+	@GetMapping("/pdf/products-report/{idpcode}")
+	public ResponseEntity<byte[]> exportProductListAsPdf(@PathVariable String idpcode) {
+
+		log.debug("REST request to get a pdf of products");
+
+		byte[] pdfContents = null;
+
+		try {
+			pdfContents = productService.exportProductListAsPdf(idpcode);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		String fileName = "product.pdf";
+		headers.add("content-disposition", "attachment; filename=" + fileName);
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
+		return response;
+	}
+	
+	
+	
+	
 }

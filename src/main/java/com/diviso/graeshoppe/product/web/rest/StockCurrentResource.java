@@ -5,12 +5,15 @@ import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
 import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import net.sf.jasperreports.engine.JRException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -158,6 +161,27 @@ public class StockCurrentResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/stock-currents");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    
+    
+    @GetMapping("/pdf/stockcurrent-report/{idpcode}")
+   	public ResponseEntity<byte[]> exportStockCurrentListAsPdf(@PathVariable String idpcode) {
 
+   		log.debug("REST request to get a pdf of stock current");
+
+   		byte[] pdfContents = null;
+
+   		try {
+   			pdfContents = stockCurrentService.exportStockCurrentAsPdf(idpcode);
+   		} catch (JRException e) {
+   			e.printStackTrace();
+   		}
+   		HttpHeaders headers = new HttpHeaders();
+   		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+   		String fileName = "stockcurrent.pdf";
+   		headers.add("content-disposition", "attachment; filename=" + fileName);
+   		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfContents, headers, HttpStatus.OK);
+   		return response;
+   	}
 
 }

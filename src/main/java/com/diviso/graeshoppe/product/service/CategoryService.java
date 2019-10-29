@@ -2,6 +2,8 @@ package com.diviso.graeshoppe.product.service;
 
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -53,4 +55,6 @@ public interface CategoryService {
      * @return the list of entities
      */
     Page<CategoryDTO> search(String query, Pageable pageable);
+
+	byte[] exportCategoryListAsPdf(String idpcode) throws JRException;
 }
