@@ -58,7 +58,7 @@ spring:
         password: root
         hikari:
             poolName: Hikari
-            auto-commit: true
+            auto-commit: false
             connection-timeout: 60000
             idle-timeout: 600000
             maximum-pool-size: 100
