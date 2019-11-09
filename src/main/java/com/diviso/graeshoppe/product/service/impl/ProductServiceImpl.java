@@ -102,7 +102,8 @@ public class ProductServiceImpl implements ProductService {
 		product = productRepository.save(product);
 		ProductDTO result = productMapper.toDto(product);
 		productSearchRepository.save(product);
-		imageService.saveFile("product", product.getId(), productDTO.getImage());
+		// saving image to minio
+		// imageService.saveFile("product", product.getId(), productDTO.getImage());
 		return result;
 	}
 
