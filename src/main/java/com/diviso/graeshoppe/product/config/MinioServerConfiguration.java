@@ -1,9 +1,9 @@
 package com.diviso.graeshoppe.product.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.google.api.client.util.Value;
 
 import io.minio.MinioClient;
 import io.minio.errors.InvalidEndpointException;
@@ -23,7 +23,6 @@ public class MinioServerConfiguration {
 	
 	@Bean
 	public MinioClient getMinioClient() throws InvalidEndpointException, InvalidPortException {
-		System.out.println("Minio url is "+url);
 		MinioClient minioClient = new MinioClient(url, accesskey,
 				secretKey);
 		return minioClient;
