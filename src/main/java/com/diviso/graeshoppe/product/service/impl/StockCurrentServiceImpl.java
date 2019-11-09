@@ -6,9 +6,6 @@ import com.diviso.graeshoppe.product.repository.StockCurrentRepository;
 import com.diviso.graeshoppe.product.repository.search.StockCurrentSearchRepository;
 import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 import com.diviso.graeshoppe.product.service.mapper.StockCurrentMapper;
-import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -19,12 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -100,7 +93,8 @@ public class StockCurrentServiceImpl implements StockCurrentService {
      *  get all the stockCurrents where Product is null.
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Override
+	@Transactional(readOnly = true) 
     public List<StockCurrentDTO> findAllWhereProductIsNull() {
         log.debug("Request to get all stockCurrents where Product is null");
         return StreamSupport

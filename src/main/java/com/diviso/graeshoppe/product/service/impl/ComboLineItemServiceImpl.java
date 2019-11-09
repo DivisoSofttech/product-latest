@@ -1,11 +1,9 @@
 package com.diviso.graeshoppe.product.service.impl;
 
 import com.diviso.graeshoppe.product.service.ComboLineItemService;
-import com.diviso.graeshoppe.product.domain.AuxilaryLineItem;
 import com.diviso.graeshoppe.product.domain.ComboLineItem;
 import com.diviso.graeshoppe.product.repository.ComboLineItemRepository;
 import com.diviso.graeshoppe.product.repository.search.ComboLineItemSearchRepository;
-import com.diviso.graeshoppe.product.service.dto.AuxilaryLineItemDTO;
 import com.diviso.graeshoppe.product.service.dto.ComboLineItemDTO;
 import com.diviso.graeshoppe.product.service.mapper.ComboLineItemMapper;
 import org.slf4j.Logger;

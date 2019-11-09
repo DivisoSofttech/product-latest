@@ -15,5 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuxilaryLineItemRepository extends JpaRepository<AuxilaryLineItem, Long> {
 
+	@Override
 	List<AuxilaryLineItem> findAll();
 }

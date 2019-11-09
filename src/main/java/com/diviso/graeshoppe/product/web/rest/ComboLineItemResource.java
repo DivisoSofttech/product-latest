@@ -1,11 +1,9 @@
 package com.diviso.graeshoppe.product.web.rest;
-import com.diviso.graeshoppe.product.domain.AuxilaryLineItem;
 import com.diviso.graeshoppe.product.domain.ComboLineItem;
 import com.diviso.graeshoppe.product.service.ComboLineItemService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
 import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
-import com.diviso.graeshoppe.product.service.dto.AuxilaryLineItemDTO;
 import com.diviso.graeshoppe.product.service.dto.ComboLineItemDTO;
 import com.diviso.graeshoppe.product.service.mapper.ComboLineItemMapper;
 

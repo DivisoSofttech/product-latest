@@ -1,7 +1,6 @@
 package com.diviso.graeshoppe.product.web.rest;
 
 import com.diviso.graeshoppe.product.domain.Product;
-import com.diviso.graeshoppe.product.domain.StockCurrent;
 import com.diviso.graeshoppe.product.service.ProductService;
 import com.diviso.graeshoppe.product.service.StockCurrentService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
