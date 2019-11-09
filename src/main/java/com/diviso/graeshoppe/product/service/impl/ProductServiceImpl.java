@@ -2,6 +2,11 @@ package com.diviso.graeshoppe.product.service.impl;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,6 +15,7 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
+import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xmlpull.v1.XmlPullParserException;
 
 import com.diviso.graeshoppe.product.domain.Product;
 import com.diviso.graeshoppe.product.domain.StockCurrent;
@@ -30,6 +37,14 @@ import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 import com.diviso.graeshoppe.product.service.mapper.ProductMapper;
 
+import io.minio.MinioClient;
+import io.minio.errors.ErrorResponseException;
+import io.minio.errors.InsufficientDataException;
+import io.minio.errors.InternalException;
+import io.minio.errors.InvalidBucketNameException;
+import io.minio.errors.InvalidResponseException;
+import io.minio.errors.MinioException;
+import io.minio.errors.NoResponseException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -52,6 +67,8 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductSearchRepository productSearchRepository;
 
+	@Autowired
+	private MinioClient minioClient;
 	@Autowired
 	StockCurrentSearchRepository stockCurrentSearchRepository;
 
@@ -77,17 +94,17 @@ public class ProductServiceImpl implements ProductService {
 	/**
 	 * Save a product.
 	 *
-	 * @param productDTO
-	 *            the entity to save
+	 * @param productDTO the entity to save
 	 * @return the persisted entity
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public ProductDTO save(ProductDTO productDTO) {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
 		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
 		product.setiDPcode(currentUserLogin.get());
-		
+
 		// .............stockcurrent not saving hack...............
 		/*
 		 * StockCurrentDTO stockCurrentDTO = new StockCurrentDTO();
@@ -96,18 +113,33 @@ public class ProductServiceImpl implements ProductService {
 		 */
 		// .............stockcurrent not saving hack...............
 
-		//product.getStockCurrent().getId();
+		// product.getStockCurrent().getId();
 		product = productRepository.save(product);
 		ProductDTO result = productMapper.toDto(product);
-			productSearchRepository.save(product);
+		productSearchRepository.save(product);
+		try {
+			boolean bucketFound=minioClient.bucketExists("foodexp-product-images");
+			if(bucketFound) {
+				Log.info("Bucket exists foodexp-product-images");
+			}else {
+				minioClient.makeBucket("foodexp-product-images");
+			}
+			
+			String imageName = product.getId()+"-product-image.png";
+			InputStream data= new ByteArrayInputStream(productDTO.getImage());
+			minioClient.putObject("foodexp-product-images", imageName, data,"images/png");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return result;
 	}
 
 	/**
 	 * Get all the products.
 	 *
-	 * @param pageable
-	 *            the pagination information
+	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Override
@@ -122,39 +154,39 @@ public class ProductServiceImpl implements ProductService {
 	 *
 	 * @return the list of entities
 	 */
-/*	public Page<ProductDTO> findAllWithEagerRelationships(Pageable pageable) {
-		return productRepository.findAllWithEagerRelationships(pageable).map(productMapper::toDto);
-	}
-*/
-	
-	 
+	/*
+	 * public Page<ProductDTO> findAllWithEagerRelationships(Pageable pageable) {
+	 * return
+	 * productRepository.findAllWithEagerRelationships(pageable).map(productMapper::
+	 * toDto); }
+	 */
+
 	/**
 	 * Get one product by id.
 	 *
-	 * @param id
-	 *            the id of the entity
+	 * @param id the id of the entity
 	 * @return the entity
 	 */
-	/*@Override
+	/*
+	 * @Override
+	 * 
+	 * @Transactional(readOnly = true) public Optional<ProductDTO> findOne(Long id)
+	 * { log.debug("Request to get Product : {}", id); return
+	 * productRepository.findOneWithEagerRelationships(id).map(productMapper::toDto)
+	 * ; }
+	 */
+
+	@Override
 	@Transactional(readOnly = true)
 	public Optional<ProductDTO> findOne(Long id) {
-		log.debug("Request to get Product : {}", id);
-		return productRepository.findOneWithEagerRelationships(id).map(productMapper::toDto);
-	}*/
+		log.debug("Request to get Tax : {}", id);
+		return productRepository.findById(id).map(productMapper::toDto);
+	}
 
-	
-	   @Override
-	    @Transactional(readOnly = true)
-	    public Optional<ProductDTO> findOne(Long id) {
-	        log.debug("Request to get Tax : {}", id);
-	        return productRepository.findById(id)
-	            .map(productMapper::toDto);
-	    }
 	/**
 	 * Delete the product by id.
 	 *
-	 * @param id
-	 *            the id of the entity
+	 * @param id the id of the entity
 	 */
 	@Override
 	public void delete(Long id) {
@@ -172,10 +204,8 @@ public class ProductServiceImpl implements ProductService {
 	/**
 	 * Search for the product corresponding to the query.
 	 *
-	 * @param query
-	 *            the query of the search
-	 * @param pageable
-	 *            the pagination information
+	 * @param query    the query of the search
+	 * @param pageable the pagination information
 	 * @return the list of entities
 	 */
 	@Override
@@ -221,10 +251,10 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public byte[] exportProductListAsPdf(String idpcode) throws JRException {
-		
+
 		log.debug("Request to pdf of all products list");
 
-		//JasperReport jr = JasperCompileManager.compileReport("product.jrxml");
+		// JasperReport jr = JasperCompileManager.compileReport("product.jrxml");
 
 		// Preparing parameters
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -245,14 +275,13 @@ public class ProductServiceImpl implements ProductService {
 
 		return JasperExportManager.exportReportToPdf(jp);
 
-	
 	}
 
-	
-
-	/* (non-Javadoc)
-	 * @see com.diviso.graeshoppe.product.service.ProductService#findOne(java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.diviso.graeshoppe.product.service.ProductService#findOne(java.lang.Long)
 	 */
-
 
 }

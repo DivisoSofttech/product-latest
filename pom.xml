@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -114,6 +115,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>6.0.11</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
@@ -130,19 +136,19 @@
 			<artifactId>jasperreports</artifactId>
 			<version>6.1.0</version>
 			<exclusions>
-	<exclusion>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-core</artifactId>
-	</exclusion>
-	<exclusion>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-analyzers-common</artifactId>
-	</exclusion>
-	<exclusion>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-queryparser</artifactId>
-	</exclusion>
-</exclusions> 
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-analyzers-common</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-queryparser</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.github.jhipster</groupId>
