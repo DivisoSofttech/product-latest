@@ -23,6 +23,7 @@ public class MinioServerConfiguration {
 	
 	@Bean
 	public MinioClient getMinioClient() throws InvalidEndpointException, InvalidPortException {
+		System.out.println("Minio url is "+url);
 		MinioClient minioClient = new MinioClient(url, accesskey,
 				secretKey);
 		return minioClient;
