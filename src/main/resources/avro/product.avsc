@@ -1,0 +1,180 @@
+[
+
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Label",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},
+		{"name":"name","type":["null","string"],"default": null}
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"ComboLineItem",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"quantity","type":["null","double"]},
+		{"name":"description","type":["null","string"]}	
+		]
+	},
+	
+		{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"StockEntry",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},
+		{"name":"reference","type":["null","string"],"default": null},
+		{"name":"date","type":"long","logicalType":"date","default": 0},
+		{"name":"description","type":["null","string"],"default": null}
+		]
+	},
+	
+			{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"StockCurrent",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},
+		{"name":"quantity","type":["null","double"]},
+		{"name":"sellprice","type":["null","double"]},
+		{"name":"notes","type":["null","string"],"default": null}
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"AuxilaryLineItem",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"quantity","type":["null","double"]},
+		{"name":"description","type":["null","string"]}	
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"EntryLineItem",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"quantityAdjustment","type":["null","double"]},
+		{"name":"valueAdjustment","type":["null","double"]},
+		{"name":"description","type":["null","string"]}		
+		]
+	},
+	
+		{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Reason",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},
+		{"name":"name","type":["null","string"],"default": null},
+		{"name":"description","type":["null","string"]}		
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"UOM",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},		
+		{"name":"unit","type":["null","string"]},
+		{"name":"description","type":["null","string"]}	
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Location",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"idpCode","type":["null","string"]},	
+		{"name":"name","type":["null","string"],"default": null}	
+		{"name":"latLon","type":["null","string"],"default": null},
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Address",
+	"fields":[
+		{"name":"addressLine1","type":["null","string"],"default": null},
+		{"name":"addressLine2","type":["null","string"],"default": null},
+		{"name":"city","type":["null","string"],"default": null},
+		{"name":" state","type":["null","string"],"default": null},
+		{"name":"country","type":["null","string"],"default": null},
+		{"name":"zipcode","type":["null","string"],"default": null}
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Discount",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"rate","type":["null","double"]}
+
+		]
+	},
+	
+	{
+	"namespace":"com.diviso.graeshoppe.product.avro",
+	"type":"record",
+	"name":"Product",
+	"fields":[
+		{"name":"id","type":["null","long"]},
+		{"name":"reference","type":["null","string"],"default": null},
+		{"name":"name","type":["null","string"],"default": null},
+		{"name":"showInCatalogue","type":["null","boolean"],"default": true},
+	    {"name":"image","type":"bytes","default":"\u00FF"},
+		{"name":"imageLink","type":["null","string"],"default": null}
+		{"name":"isActive","type":["null","boolean"],"default": true},
+		{"name":" sku","type":["null","string"],"default": null},
+		{"name":"idpCode","type":["null","string"]},
+		{"name":"isServiceItem","type":["null","boolean"],"default": false},
+		{"name":"isAuxilaryItem","type":["null","boolean"],"default": false},
+		{"name":"minQuantityLevel","type":["null","double"],"default": 0.0},
+		{"name":"maxQuantityLevel","type":["null","double"],"default": 0.0},
+		{"name":"storageCost","type":["null","double"],"default": 0.0},
+		{"name":"sellingPrice","type":["null","double"],"default": 0.0},
+		{"name":"buyPrice","type":["null","double"],"default": 0.0},
+		
+		{"name":"discount","type":["null","com.diviso.graeshoppe.product.avro.Discount"]},
+		{"name":"uom","type":"com.diviso.graeshoppe.product.avro.UOM"},
+		
+		{"name":"discountRate","type":["null","double"],"default": 0.0},
+		{"name":"manufacturerName","type":["null","string"],"default": null},
+		{"name":"brandName","type":["null","string"],"default": null},
+		{"name":" unit","type":["null","string"],"default": null},
+		{"name":"categoryName","type":["null","string"],"default": null},
+		{"name":"categoryImage","type":"bytes","default":"\u00FF"},
+		{"name":"categoryImageContentType","type":["null","string"],"default": null}
+		{"name":"categoryDescription","type":["null","string"],"default": null},
+		{"name":"locationName","type":["null","string"],"default": null},
+		{"name":"latLon","type":["null","string"],"default": null},
+		
+
+		 {"name":"labels","type":{"type":"array","items":"com.diviso.graeshoppe.product.avro.Label"}}
+		]
+	}
+	
+	
+	
+	
+	
+]
