@@ -44,11 +44,14 @@ public class StockEntry implements Serializable {
     @OneToMany(mappedBy = "stockEntry",cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<EntryLineItem> entryLineItems = new HashSet<>();
-    @ManyToOne(cascade=CascadeType.ALL)
+    
+    @ManyToOne
+    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("stockEntries")
     private Reason reason;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
+    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("stockEntries")
     private Location location;
 

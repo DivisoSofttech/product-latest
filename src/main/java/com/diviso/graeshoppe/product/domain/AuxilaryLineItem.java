@@ -32,11 +32,13 @@ public class AuxilaryLineItem implements Serializable {
     @Column(name = "quantity")
     private Double quantity;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
+    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("auxilaryLineItems")
     private Product product;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
+    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("auxilaryLineItems")
     private Product auxilaryItem;
 
