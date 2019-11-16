@@ -19,6 +19,6 @@ Agile application delivery is leveraged to transform a roadmap into a production
 
 # Internationally Certified Developers
 
-Our Internationally Certified Java Consultants are ready to collaborate with your team. Their experience working with technologies like J2EE, Struts, JSF, Spring, Hibernate, JPA, Microservices, Cloud, Portals, Docker, Kubernetes would be an asset.
+Our Internationally Certified Java Consultants are ready to collaborate with your team. Their experience working with technologies like J2EE, Struts, JSF, Spring, Hibernate, JPA, Microservices, Cloud, Ionic, Anular, Portals, Docker, Kubernetes would be an asset.
 
 [Contact Us](http://www.lxisoft.com/contact-us-2/)
