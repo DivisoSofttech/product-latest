@@ -63,6 +63,7 @@ entity Category{
 	IDPcode String,
     name String,
     image ImageBlob,
+    imageLink String,
     description String
 }
 entity TaxCategory {

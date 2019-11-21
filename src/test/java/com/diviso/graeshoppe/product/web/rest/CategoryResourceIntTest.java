@@ -61,6 +61,9 @@ public class CategoryResourceIntTest {
     private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_IMAGE_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE_LINK = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -124,6 +127,7 @@ public class CategoryResourceIntTest {
             .name(DEFAULT_NAME)
             .image(DEFAULT_IMAGE)
             .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
+            .imageLink(DEFAULT_IMAGE_LINK)
             .description(DEFAULT_DESCRIPTION);
         return category;
     }
@@ -153,6 +157,7 @@ public class CategoryResourceIntTest {
         assertThat(testCategory.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCategory.getImage()).isEqualTo(DEFAULT_IMAGE);
         assertThat(testCategory.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
+        assertThat(testCategory.getImageLink()).isEqualTo(DEFAULT_IMAGE_LINK);
         assertThat(testCategory.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 
         // Validate the Category in Elasticsearch
@@ -197,6 +202,7 @@ public class CategoryResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
     
@@ -215,6 +221,7 @@ public class CategoryResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
+            .andExpect(jsonPath("$.imageLink").value(DEFAULT_IMAGE_LINK.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
@@ -243,6 +250,7 @@ public class CategoryResourceIntTest {
             .name(UPDATED_NAME)
             .image(UPDATED_IMAGE)
             .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .imageLink(UPDATED_IMAGE_LINK)
             .description(UPDATED_DESCRIPTION);
         CategoryDTO categoryDTO = categoryMapper.toDto(updatedCategory);
 
@@ -259,6 +267,7 @@ public class CategoryResourceIntTest {
         assertThat(testCategory.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCategory.getImage()).isEqualTo(UPDATED_IMAGE);
         assertThat(testCategory.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
+        assertThat(testCategory.getImageLink()).isEqualTo(UPDATED_IMAGE_LINK);
         assertThat(testCategory.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 
         // Validate the Category in Elasticsearch
@@ -324,6 +333,7 @@ public class CategoryResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].imageLink").value(hasItem(DEFAULT_IMAGE_LINK)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 

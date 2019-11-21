@@ -18,6 +18,8 @@ public class CategoryDTO implements Serializable {
     private byte[] image;
 
     private String imageContentType;
+    private String imageLink;
+
     private String description;
 
 
@@ -61,6 +63,14 @@ public class CategoryDTO implements Serializable {
         this.imageContentType = imageContentType;
     }
 
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -97,6 +107,7 @@ public class CategoryDTO implements Serializable {
             ", iDPcode='" + getiDPcode() + "'" +
             ", name='" + getName() + "'" +
             ", image='" + getImage() + "'" +
+            ", imageLink='" + getImageLink() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }

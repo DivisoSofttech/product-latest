@@ -1,6 +1,7 @@
 package com.diviso.graeshoppe.product.service.impl;
 
 import com.diviso.graeshoppe.product.service.CategoryService;
+import com.diviso.graeshoppe.product.service.ImageService;
 import com.diviso.graeshoppe.product.domain.Category;
 import com.diviso.graeshoppe.product.repository.CategoryRepository;
 import com.diviso.graeshoppe.product.repository.search.CategorySearchRepository;
@@ -41,6 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	DataSource dataSource;
 	
+	@Autowired
+	private ImageService imageService;
+	
 
     private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
@@ -66,6 +70,8 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
+		String imageLink = imageService.saveFile("category", category.getId(), categoryDTO.getImage());
+		category.setImageLink(imageLink);
         category = categoryRepository.save(category);
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);

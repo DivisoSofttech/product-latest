@@ -214,12 +214,12 @@ jhipster:
 # application:
 minio:
    server:
-      url: https://play.min.io
-      accessKey: Q3AM3UQ867SPQQA43P2F
-      secretKey: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
+      url: http://dev.servers.divisosofttech.com:9000
+      accessKey: R0WPNXCYE0OUI134W1GD
+      secretKey: E7jCb+99h1xYy84QoDpqm1aITTGt7gRJp8gv73uw
    buckets:
-      product: foodexp-product-images
-      category: foodexp-category-images
+      product: graeshoppe-product-images
+      category: graeshoppe-category-images
    configuration:
       contentType: images/png
       

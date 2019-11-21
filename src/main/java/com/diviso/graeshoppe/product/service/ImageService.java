@@ -27,20 +27,27 @@ public class ImageService {
 
 	@Value("${minio.configuration.contentType}")
 	private String contentType;
+	
+	@Value("${minio.server.url}")
+	private String url;
+
 
 	@SuppressWarnings("deprecation")
-	public void saveFile(String type, Long entityId, byte[] data) {
+	public String saveFile(String type, Long entityId, byte[] data) {
 		InputStream streamData = new ByteArrayInputStream(data);
 		String bucket = null;
 		String imageName = null; 
+		String imageLink = url;
 		if (type.equals("product")) {
 			bucket = productBucketName;
 			imageName = entityId+"-product-image.png";
-			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName);
+			imageLink = imageLink.concat("/"+bucket).concat("/"+imageLink);
+			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName+" image link is "+imageLink);
 		} else if (type.equals("category")) {
 			bucket = categoryBucketName;
 			imageName = entityId+"-category-image.png";
-			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName);
+			imageLink = imageLink.concat("/"+bucket).concat("/"+imageLink);
+			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName+"  image link is "+imageLink);
 		}
 		try {
 			minioClient.putObject(bucket, imageName, streamData, contentType);
@@ -49,6 +56,8 @@ public class ImageService {
 		} catch (Exception e) {
 			log.error("Something went wrong while saving image to miniob server "+ e.getMessage());
 		}
+		
+		return imageLink;
 	}
 
 }

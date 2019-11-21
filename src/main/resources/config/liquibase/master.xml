@@ -14,7 +14,7 @@
     <include file="config/liquibase/changelog/20190705072312_added_entity_Supplier.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072313_added_entity_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072314_added_entity_UOM.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20190705072315_added_entity_Category.xml" relativeToChangelogFile="false"/>
+
     <include file="config/liquibase/changelog/20190705072316_added_entity_TaxCategory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072317_added_entity_Tax.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072318_added_entity_Location.xml" relativeToChangelogFile="false"/>
@@ -25,6 +25,7 @@
     <include file="config/liquibase/changelog/20190705072323_added_entity_StockCurrent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072324_added_entity_Label.xml" relativeToChangelogFile="false"/>
 
+    <include file="config/liquibase/changelog/20191120111214_added_entity_Category.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190705072306_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072310_added_entity_constraints_ComboLineItem.xml" relativeToChangelogFile="false"/>

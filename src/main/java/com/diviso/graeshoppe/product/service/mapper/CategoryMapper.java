@@ -12,8 +12,7 @@ import org.mapstruct.*;
 public interface CategoryMapper extends EntityMapper<CategoryDTO, Category> {
 
 
-    @Override
-	@Mapping(target = "products", ignore = true)
+    @Mapping(target = "products", ignore = true)
     Category toEntity(CategoryDTO categoryDTO);
 
     default Category fromId(Long id) {

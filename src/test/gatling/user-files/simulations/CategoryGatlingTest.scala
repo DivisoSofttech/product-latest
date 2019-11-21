@@ -104,6 +104,7 @@ class CategoryGatlingTest extends Simulation {
                 , "iDPcode":"SAMPLE_TEXT"
                 , "name":"SAMPLE_TEXT"
                 , "image":null
+                , "imageLink":"SAMPLE_TEXT"
                 , "description":"SAMPLE_TEXT"
                 }""")).asJSON
             .check(status.is(201))

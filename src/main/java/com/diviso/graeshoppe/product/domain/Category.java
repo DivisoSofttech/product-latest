@@ -1,6 +1,7 @@
 package com.diviso.graeshoppe.product.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,7 +20,6 @@ import java.util.Objects;
 @Table(name = "category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "category")
-
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,10 +41,13 @@ public class Category implements Serializable {
     @Column(name = "image_content_type")
     private String imageContentType;
 
+    @Column(name = "image_link")
+    private String imageLink;
+
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -106,6 +109,19 @@ public class Category implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public Category imageLink(String imageLink) {
+        this.imageLink = imageLink;
+        return this;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public String getDescription() {
@@ -175,6 +191,7 @@ public class Category implements Serializable {
             ", name='" + getName() + "'" +
             ", image='" + getImage() + "'" +
             ", imageContentType='" + getImageContentType() + "'" +
+            ", imageLink='" + getImageLink() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }
