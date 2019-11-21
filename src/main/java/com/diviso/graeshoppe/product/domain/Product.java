@@ -1,6 +1,7 @@
 package com.diviso.graeshoppe.product.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -8,9 +9,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.data.elasticsearch.annotations.Setting;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,8 +21,6 @@ import java.util.Objects;
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "product")
-@Setting(settingPath = "settings/productsettings.json")
-@Mapping(mappingPath = "mappings/productmapping.json") 
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +44,9 @@ public class Product implements Serializable {
 
     @Column(name = "image_content_type")
     private String imageContentType;
+
+    @Column(name = "image_link")
+    private String imageLink;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -79,53 +78,44 @@ public class Product implements Serializable {
     @Column(name = "buy_price")
     private Double buyPrice;
 
-    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AuxilaryLineItem> auxilaryLineItems = new HashSet<>();
-    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ComboLineItem> comboLineItems = new HashSet<>();
-    @OneToMany(mappedBy = "product",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Label> labels = new HashSet<>();
-    
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private TaxCategory taxCategory;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private UOM unit;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Location location;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Supplier supplier;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Manufacturer manufacturer;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Brand brand;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Discount discount;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("products")
     private Category category;
 
@@ -201,6 +191,19 @@ public class Product implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public Product imageLink(String imageLink) {
+        this.imageLink = imageLink;
+        return this;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public Boolean isIsActive() {
@@ -542,6 +545,7 @@ public class Product implements Serializable {
             ", showInCatalogue='" + isShowInCatalogue() + "'" +
             ", image='" + getImage() + "'" +
             ", imageContentType='" + getImageContentType() + "'" +
+            ", imageLink='" + getImageLink() + "'" +
             ", isActive='" + isIsActive() + "'" +
             ", sku='" + getSku() + "'" +
             ", iDPcode='" + getiDPcode() + "'" +

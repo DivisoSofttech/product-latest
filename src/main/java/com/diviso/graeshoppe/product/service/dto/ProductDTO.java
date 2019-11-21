@@ -20,6 +20,8 @@ public class ProductDTO implements Serializable {
     private byte[] image;
 
     private String imageContentType;
+    private String imageLink;
+
     private Boolean isActive;
 
     private String sku;
@@ -103,6 +105,14 @@ public class ProductDTO implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public Boolean isIsActive() {
@@ -278,6 +288,7 @@ public class ProductDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", showInCatalogue='" + isShowInCatalogue() + "'" +
             ", image='" + getImage() + "'" +
+            ", imageLink='" + getImageLink() + "'" +
             ", isActive='" + isIsActive() + "'" +
             ", sku='" + getSku() + "'" +
             ", iDPcode='" + getiDPcode() + "'" +

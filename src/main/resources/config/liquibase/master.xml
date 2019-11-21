@@ -24,6 +24,7 @@
     <include file="config/liquibase/changelog/20190705072322_added_entity_Reason.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072323_added_entity_StockCurrent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072324_added_entity_Label.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190705072306_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072310_added_entity_constraints_ComboLineItem.xml" relativeToChangelogFile="false"/>
@@ -35,5 +36,6 @@
     <include file="config/liquibase/changelog/20190705072321_added_entity_constraints_EntryLineItem.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072323_added_entity_constraints_StockCurrent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190705072324_added_entity_constraints_Label.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

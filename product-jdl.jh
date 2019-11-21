@@ -3,6 +3,7 @@ entity Product {
     name String,
     showInCatalogue Boolean,
     image ImageBlob,
+    imageLink String,
     isActive Boolean,
     sku String,
     IDPcode String,

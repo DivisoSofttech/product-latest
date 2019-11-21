@@ -11,8 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {TaxCategoryMapper.class, UOMMapper.class, LocationMapper.class, SupplierMapper.class, ManufacturerMapper.class, BrandMapper.class, DiscountMapper.class, CategoryMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
 
-    @Override
-	@Mapping(source = "taxCategory.id", target = "taxCategoryId")
+    @Mapping(source = "taxCategory.id", target = "taxCategoryId")
     @Mapping(source = "unit.id", target = "unitId")
     @Mapping(source = "location.id", target = "locationId")
     @Mapping(source = "supplier.id", target = "supplierId")
@@ -22,8 +21,7 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     @Mapping(source = "category.id", target = "categoryId")
     ProductDTO toDto(Product product);
 
-    @Override
-	@Mapping(target = "auxilaryLineItems", ignore = true)
+    @Mapping(target = "auxilaryLineItems", ignore = true)
     @Mapping(target = "comboLineItems", ignore = true)
     @Mapping(target = "labels", ignore = true)
     @Mapping(source = "taxCategoryId", target = "taxCategory")
