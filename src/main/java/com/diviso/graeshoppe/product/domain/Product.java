@@ -24,7 +24,7 @@ import java.util.Objects;
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "product")
-@Setting(settingPath = "settings/indexsettings.json")
+@Setting(settingPath = "settings/productsettings.json")
 @Mapping(mappingPath = "mappings/productmapping.json") 
 public class Product implements Serializable {
 
