@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -87,8 +88,10 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO save(ProductDTO productDTO) {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
-		String imageLink  = imageService.saveFile("product", product.getId(), productDTO.getImage());
+		String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
+		product.setImage(null);
+		product.setImageContentType(null);
 		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
 		product.setiDPcode(currentUserLogin.get());
 

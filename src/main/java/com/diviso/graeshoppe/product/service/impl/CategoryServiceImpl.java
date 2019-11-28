@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -70,8 +71,10 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
-		String imageLink = imageService.saveFile("category", category.getId(), categoryDTO.getImage());
+		String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), categoryDTO.getImage());
 		category.setImageLink(imageLink);
+		category.setImage(null);
+		category.setImageContentType(null);
         category = categoryRepository.save(category);
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);

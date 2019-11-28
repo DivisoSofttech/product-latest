@@ -33,28 +33,28 @@ public class ImageService {
 
 
 	@SuppressWarnings("deprecation")
-	public String saveFile(String type, Long entityId, byte[] data) {
+	public String saveFile(String type, String entityId, byte[] data) {
 		InputStream streamData = new ByteArrayInputStream(data);
 		String bucket = null;
 		String imageName = null; 
 		String imageLink = url;
-		if (type.equals("product")) {
+		if (type.equals("store")) {
 			bucket = productBucketName;
 			imageName = entityId+"-product-image.png";
-			imageLink = imageLink.concat("/"+bucket).concat("/"+imageLink);
+			imageLink = url+"/"+bucket+"/"+imageName;
 			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName+" image link is "+imageLink);
 		} else if (type.equals("category")) {
 			bucket = categoryBucketName;
 			imageName = entityId+"-category-image.png";
 			imageLink = imageLink.concat("/"+bucket).concat("/"+imageLink);
-			log.info("Saving the product Image in bucket "+bucket+" imagename is "+imageName+"  image link is "+imageLink);
+			log.info("Saving the category Image in bucket "+bucket+" imagename is "+imageName+"  image link is "+imageLink);
 		}
 		try {
 			minioClient.putObject(bucket, imageName, streamData, contentType);
 			log.info("Image has been saved successfully");
 
 		} catch (Exception e) {
-			log.error("Something went wrong while saving image to miniob server "+ e.getMessage());
+			log.error("Something went wrong while saving image to minio server "+ e.getMessage());
 		}
 		
 		return imageLink;
