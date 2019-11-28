@@ -88,10 +88,15 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO save(ProductDTO productDTO) {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
+		
+		if(product.getImage()!=null)  
+		{
 		String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
 		product.setImage(null);
 		product.setImageContentType(null);
+		
+		}
 		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
 		product.setiDPcode(currentUserLogin.get());
 

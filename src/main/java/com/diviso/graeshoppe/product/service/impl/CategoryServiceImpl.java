@@ -71,10 +71,15 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
-		String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), categoryDTO.getImage());
+		if(category.getImage()!=null) 
+		{
+        
+        String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), categoryDTO.getImage());
 		category.setImageLink(imageLink);
 		category.setImage(null);
 		category.setImageContentType(null);
+		
+		}
         category = categoryRepository.save(category);
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);
