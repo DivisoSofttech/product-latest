@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		if(product.getImage()!=null)  
 		{
-		String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), productDTO.getImage());
+		String imageLink  = imageService.saveFile("product", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
 		product.setImage(null);
 		product.setImageContentType(null);
