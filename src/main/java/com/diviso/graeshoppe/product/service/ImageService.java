@@ -38,7 +38,7 @@ public class ImageService {
 		String bucket = null;
 		String imageName = null; 
 		String imageLink = url;
-		if (type.equals("store")) {
+		if (type.equals("product")) {
 			bucket = productBucketName;
 			imageName = entityId+"-product-image.png";
 			imageLink = url+"/"+bucket+"/"+imageName;
