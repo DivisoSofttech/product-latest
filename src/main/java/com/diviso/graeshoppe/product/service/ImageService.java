@@ -54,10 +54,11 @@ public class ImageService {
 			log.info("Image has been saved successfully");
 
 		} catch (Exception e) {
-			log.error("Something went wrong while saving image to minio server "+ e.getMessage());
+			log.error("Something went wrong while saving image to miniob server "+ e.getMessage());
 		}
 		
 		return imageLink;
 	}
+
 
 }
