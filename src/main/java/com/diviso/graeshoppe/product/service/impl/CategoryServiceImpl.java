@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
 		if(category.getImage()!=null) 
 		{
         
-        String imageLink  = imageService.saveFile("store", UUID.randomUUID().toString(), categoryDTO.getImage());
+        String imageLink  = imageService.saveFile("category", UUID.randomUUID().toString(), categoryDTO.getImage());
 		category.setImageLink(imageLink);
 		category.setImage(null);
 		category.setImageContentType(null);
