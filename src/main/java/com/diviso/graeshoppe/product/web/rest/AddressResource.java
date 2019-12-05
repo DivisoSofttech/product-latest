@@ -49,11 +49,7 @@ public class AddressResource {
         if (addressDTO.getId() != null) {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        AddressDTO result1 = addressService.save(addressDTO);
-        if (result1.getId() == null) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idexists");
-        }
-        AddressDTO result = addressService.save(result1);
+        AddressDTO result = addressService.save(addressDTO);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

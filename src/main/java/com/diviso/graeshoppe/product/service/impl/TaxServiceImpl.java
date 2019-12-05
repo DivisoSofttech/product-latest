@@ -49,11 +49,20 @@ public class TaxServiceImpl implements TaxService {
     public TaxDTO save(TaxDTO taxDTO) {
         log.debug("Request to save Tax : {}", taxDTO);
         
-        Tax tax1 = taxMapper.toEntity(taxDTO);
-        tax1 = taxRepository.save(tax1);
-        taxSearchRepository.save(tax1);
+        Tax tax = taxMapper.toEntity(taxDTO);
+        tax= taxRepository.save(tax);
+ 
+        TaxDTO result = taxMapper.toDto(tax);
+        taxSearchRepository.save(tax);
+        return updateToEs(result);
+    }
+    
+    private TaxDTO updateToEs(TaxDTO taxDTO) {
+        log.debug("Request to save Tax : {}", taxDTO);
         
-        Tax tax = taxRepository.save(tax1);
+        Tax tax = taxMapper.toEntity(taxDTO);
+        tax= taxRepository.save(tax);
+ 
         TaxDTO result = taxMapper.toDto(tax);
         taxSearchRepository.save(tax);
         return result;

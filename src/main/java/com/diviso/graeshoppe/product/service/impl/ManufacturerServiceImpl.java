@@ -52,6 +52,15 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         manufacturer = manufacturerRepository.save(manufacturer);
         ManufacturerDTO result = manufacturerMapper.toDto(manufacturer);
         manufacturerSearchRepository.save(manufacturer);
+        return updateToEs(result);
+    }
+    
+    private ManufacturerDTO updateToEs(ManufacturerDTO manufacturerDTO) {
+        log.debug("Request to save Manufacturer : {}", manufacturerDTO);
+        Manufacturer manufacturer = manufacturerMapper.toEntity(manufacturerDTO);
+        manufacturer = manufacturerRepository.save(manufacturer);
+        ManufacturerDTO result = manufacturerMapper.toDto(manufacturer);
+        manufacturerSearchRepository.save(manufacturer);
         return result;
     }
 

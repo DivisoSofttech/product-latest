@@ -62,11 +62,8 @@ public class AuxilaryLineItemResource {
 	        if (auxilaryLineItemDTO.getId() != null) {
 	            throw new BadRequestAlertException("A new banner cannot already have an ID", ENTITY_NAME, "idexists");
 	        }
-	        AuxilaryLineItemDTO result1 = auxilaryLineItemService.save(auxilaryLineItemDTO);
-			if (result1.getId() == null) {
-				throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-			}
-			AuxilaryLineItemDTO result = auxilaryLineItemService.save(result1);
+	        AuxilaryLineItemDTO result = auxilaryLineItemService.save(auxilaryLineItemDTO);
+
 	        return ResponseEntity.created(new URI("/api/auxilary-line-items/" + result.getId()))
 	            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
 	            .body(result);	}

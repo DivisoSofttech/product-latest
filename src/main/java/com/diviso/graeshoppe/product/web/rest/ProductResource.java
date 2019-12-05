@@ -77,18 +77,13 @@ public class ProductResource {
 			throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
 		}
 
-		ProductDTO result1 = productService.save(productDTO);
+		ProductDTO result = productService.save(productDTO);
 		
-		stockCurrent.setiDPcode(result1.getiDPcode());
+		stockCurrent.setiDPcode(result.getiDPcode());
 		stockCurrent.setQuantity(0.0);
-		stockCurrent.setProductId(result1.getId());
+		stockCurrent.setProductId(result.getId());
 		
 		stockCurrent= stockCurrentService.save(stockCurrent);
-
-		if (result1.getId() == null) {
-			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-		}
-		ProductDTO result = productService.save(result1);
 
 		stockCurrentService.save(stockCurrent);
 

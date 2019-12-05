@@ -56,11 +56,8 @@ public class ComboLineItemResource {
         if (comboLineItemDTO.getId() != null) {
             throw new BadRequestAlertException("A new comboLineItem cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ComboLineItemDTO result1 = comboLineItemService.save(comboLineItemDTO);
-		if (result1.getId() == null) {
-			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-		}
-		ComboLineItemDTO result = comboLineItemService.save(result1);
+        ComboLineItemDTO result = comboLineItemService.save(comboLineItemDTO);
+
         return ResponseEntity.created(new URI("/api/combo-line-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

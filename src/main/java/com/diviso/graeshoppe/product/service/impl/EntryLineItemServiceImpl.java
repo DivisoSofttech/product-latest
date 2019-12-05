@@ -99,6 +99,55 @@ public class EntryLineItemServiceImpl implements EntryLineItemService {
 		EntryLineItem entryLineItem = entryLineItemRepository.save(entryLineItem1);
 		EntryLineItemDTO result = entryLineItemMapper.toDto(entryLineItem);
 		entryLineItemSearchRepository.save(entryLineItem);
+		return updateToEs(result);
+	}
+	
+	private EntryLineItemDTO updateToEs(EntryLineItemDTO entryLineItemDTO) {
+		log.debug("Request to save EntryLineItem : {}", entryLineItemDTO);
+		Optional<StockCurrentDTO> lineItem = stockCurrentService.findByProductId(entryLineItemDTO.getProductId());
+		if (lineItem.isPresent()) {
+			log.info("Inside if condition main");
+			Double quantityUpdated = lineItem.get().getQuantity();
+			log.info("quantity current " + quantityUpdated);
+			Double priceAdjusted = lineItem.get().getSellPrice();
+			log.info("price current " + priceAdjusted);
+			if (entryLineItemDTO.getQuantityAdjustment() != null) {
+
+				if (entryLineItemDTO.getQuantityAdjustment() >= 0) {
+					log.info("Quantity djustment is greater than 0 ");
+					quantityUpdated += entryLineItemDTO.getQuantityAdjustment();
+					log.info("Quantity Adjusted updatedquantity is " + quantityUpdated);
+				} else {
+					log.info("Quantity djustment is less than 0 ");
+					quantityUpdated += entryLineItemDTO.getQuantityAdjustment();
+					log.info("Quantity Adjusted updatedquantity is " + quantityUpdated);
+				}
+			}
+			if (entryLineItemDTO.getValueAdjustment() != null) {
+
+				if (entryLineItemDTO.getValueAdjustment() >= 0) {
+					log.info(" Value Adjustment is greater than 0 ");
+					priceAdjusted += entryLineItemDTO.getValueAdjustment();
+					log.info("Value Adjusted priceadjusted is " + priceAdjusted);
+				} else {
+					log.info(" Value Adjustment is less than 0 ");
+					priceAdjusted += entryLineItemDTO.getValueAdjustment();
+					log.info("Value Adjusted priceadjusted is " + priceAdjusted);
+
+				}
+			}
+			lineItem.get().setQuantity(quantityUpdated);
+			lineItem.get().setSellPrice(priceAdjusted);
+			stockCurrentService.save(lineItem.get());
+		}
+		EntryLineItem entryLineItem1 = entryLineItemMapper.toEntity(entryLineItemDTO);
+		entryLineItem1 = entryLineItemRepository.save(entryLineItem1);
+		EntryLineItemDTO result1 = entryLineItemMapper.toDto(entryLineItem1);
+		entryLineItemSearchRepository.save(entryLineItem1);
+
+		EntryLineItem entryLineItem = entryLineItemRepository.save(entryLineItem1);
+		EntryLineItemDTO result = entryLineItemMapper.toDto(entryLineItem);
+		entryLineItemSearchRepository.save(entryLineItem);
 		return result;
 	}
 

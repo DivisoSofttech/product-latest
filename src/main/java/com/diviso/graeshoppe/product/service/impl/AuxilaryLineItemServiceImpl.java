@@ -58,17 +58,21 @@ public class AuxilaryLineItemServiceImpl implements AuxilaryLineItemService {
 
 		AuxilaryLineItem auxilaryLineItem1 = auxilaryLineItemMapper.toEntity(auxilaryLineItemDTO);
 		auxilaryLineItem1 = auxilaryLineItemRepository.save(auxilaryLineItem1);
-		AuxilaryLineItemDTO result1 = auxilaryLineItemMapper.toDto(auxilaryLineItem1);
-		auxilaryLineItemSearchRepository.save(auxilaryLineItem1);
-        
-        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Request to save result1 : {}", result1);
-		
-        auxilaryLineItem1 = auxilaryLineItemMapper.toEntity(result1);
-		auxilaryLineItem1 = auxilaryLineItemRepository.save(auxilaryLineItem1);
-         log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Request to save auxilaryLineItem1 : {}", auxilaryLineItem1);       
-        
 		AuxilaryLineItemDTO result = auxilaryLineItemMapper.toDto(auxilaryLineItem1);
 		auxilaryLineItemSearchRepository.save(auxilaryLineItem1);
+
+		return updateToEs(result);
+	}
+	
+	
+	private AuxilaryLineItemDTO updateToEs(AuxilaryLineItemDTO auxilaryLineItemDTO) {
+		log.debug("Request to save AuxilaryLineItem : {}", auxilaryLineItemDTO);
+
+		AuxilaryLineItem auxilaryLineItem1 = auxilaryLineItemMapper.toEntity(auxilaryLineItemDTO);
+		auxilaryLineItem1 = auxilaryLineItemRepository.save(auxilaryLineItem1);
+		AuxilaryLineItemDTO result = auxilaryLineItemMapper.toDto(auxilaryLineItem1);
+		auxilaryLineItemSearchRepository.save(auxilaryLineItem1);
+
 		return result;
 	}
 

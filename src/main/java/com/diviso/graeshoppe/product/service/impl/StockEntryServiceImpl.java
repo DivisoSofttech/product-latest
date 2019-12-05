@@ -49,10 +49,18 @@ public class StockEntryServiceImpl implements StockEntryService {
     public StockEntryDTO save(StockEntryDTO stockEntryDTO) {
         log.debug("Request to save StockEntry : {}", stockEntryDTO);
         StockEntry stockEntry1 = stockEntryMapper.toEntity(stockEntryDTO);
+   
+        StockEntry stockEntry = stockEntryRepository.save(stockEntry1);
+        StockEntryDTO result = stockEntryMapper.toDto(stockEntry);
+        stockEntrySearchRepository.save(stockEntry);
         
-        stockEntry1 = stockEntryRepository.save(stockEntry1);
-        stockEntrySearchRepository.save(stockEntry1);
-        
+        return updateToEs(result);
+    }
+    
+    private StockEntryDTO updateToEs(StockEntryDTO stockEntryDTO) {
+        log.debug("Request to save StockEntry : {}", stockEntryDTO);
+        StockEntry stockEntry1 = stockEntryMapper.toEntity(stockEntryDTO);
+   
         StockEntry stockEntry = stockEntryRepository.save(stockEntry1);
         StockEntryDTO result = stockEntryMapper.toDto(stockEntry);
         stockEntrySearchRepository.save(stockEntry);

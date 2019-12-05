@@ -52,6 +52,16 @@ public class BrandServiceImpl implements BrandService {
         brand = brandRepository.save(brand);
         BrandDTO result = brandMapper.toDto(brand);
         brandSearchRepository.save(brand);
+        return updateToEs(result);
+    }
+    
+    
+    private BrandDTO updateToEs(BrandDTO brandDTO) {
+        log.debug("Request to save Brand : {}", brandDTO);
+        Brand brand = brandMapper.toEntity(brandDTO);
+        brand = brandRepository.save(brand);
+        BrandDTO result = brandMapper.toDto(brand);
+        brandSearchRepository.save(brand);
         return result;
     }
 

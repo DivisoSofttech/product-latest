@@ -52,6 +52,15 @@ public class AddressServiceImpl implements AddressService {
         address = addressRepository.save(address);
         AddressDTO result = addressMapper.toDto(address);
         addressSearchRepository.save(address);
+        return updateToEs(result);
+    }
+    
+    private AddressDTO updateToEs(AddressDTO addressDTO) {
+        log.debug("Request to save Address : {}", addressDTO);
+        Address address = addressMapper.toEntity(addressDTO);
+        address = addressRepository.save(address);
+        AddressDTO result = addressMapper.toDto(address);
+        addressSearchRepository.save(address);
         return result;
     }
 
