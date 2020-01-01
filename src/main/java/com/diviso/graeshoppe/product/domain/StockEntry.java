@@ -1,18 +1,15 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A StockEntry.
@@ -20,13 +17,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "stock_entry")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "stockentry")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "stockentry")
 public class StockEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -35,23 +33,21 @@ public class StockEntry implements Serializable {
     @Column(name = "reference")
     private String reference;
 
-    @Column(name = "jhi_date")
-    private LocalDate date;
+    @Column(name = "date")
+    private Instant date;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "stockEntry",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "stockEntry")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<EntryLineItem> entryLineItems = new HashSet<>();
-    
+
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("stockEntries")
     private Reason reason;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("stockEntries")
     private Location location;
 
@@ -90,16 +86,16 @@ public class StockEntry implements Serializable {
         this.reference = reference;
     }
 
-    public LocalDate getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public StockEntry date(LocalDate date) {
+    public StockEntry date(Instant date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
@@ -173,19 +169,15 @@ public class StockEntry implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof StockEntry)) {
             return false;
         }
-        StockEntry stockEntry = (StockEntry) o;
-        if (stockEntry.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), stockEntry.getId());
+        return id != null && id.equals(((StockEntry) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

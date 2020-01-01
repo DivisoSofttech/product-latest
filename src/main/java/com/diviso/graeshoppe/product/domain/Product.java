@@ -1,21 +1,14 @@
 package com.diviso.graeshoppe.product.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.data.elasticsearch.annotations.Setting;
-
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Product.
@@ -23,15 +16,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "product")
-@Setting(settingPath = "settings/productsettings.json")
-@Mapping(mappingPath = "mappings/productmapping.json") 
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "product")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "reference")
@@ -42,13 +34,6 @@ public class Product implements Serializable {
 
     @Column(name = "show_in_catalogue")
     private Boolean showInCatalogue;
-
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-
-    @Column(name = "image_content_type")
-    private String imageContentType;
 
     @Column(name = "image_link")
     private String imageLink;
@@ -86,12 +71,15 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AuxilaryLineItem> auxilaryLineItems = new HashSet<>();
+
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ComboLineItem> comboLineItems = new HashSet<>();
+
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Label> labels = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("products")
     private TaxCategory taxCategory;
@@ -170,32 +158,6 @@ public class Product implements Serializable {
 
     public void setShowInCatalogue(Boolean showInCatalogue) {
         this.showInCatalogue = showInCatalogue;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public Product image(byte[] image) {
-        this.image = image;
-        return this;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return imageContentType;
-    }
-
-    public Product imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-        return this;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
     }
 
     public String getImageLink() {
@@ -526,19 +488,15 @@ public class Product implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Product)) {
             return false;
         }
-        Product product = (Product) o;
-        if (product.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), product.getId());
+        return id != null && id.equals(((Product) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
@@ -548,8 +506,6 @@ public class Product implements Serializable {
             ", reference='" + getReference() + "'" +
             ", name='" + getName() + "'" +
             ", showInCatalogue='" + isShowInCatalogue() + "'" +
-            ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
             ", imageLink='" + getImageLink() + "'" +
             ", isActive='" + isIsActive() + "'" +
             ", sku='" + getSku() + "'" +

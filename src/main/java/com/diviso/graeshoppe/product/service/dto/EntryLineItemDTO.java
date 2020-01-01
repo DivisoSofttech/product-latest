@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the EntryLineItem entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.EntryLineItem} entity.
  */
 public class EntryLineItemDTO implements Serializable {
 
@@ -16,9 +16,9 @@ public class EntryLineItemDTO implements Serializable {
     private String description;
 
 
-    private Long stockEntryId;
-
     private Long productId;
+
+    private Long stockEntryId;
 
     public Long getId() {
         return id;
@@ -52,20 +52,20 @@ public class EntryLineItemDTO implements Serializable {
         this.description = description;
     }
 
-    public Long getStockEntryId() {
-        return stockEntryId;
-    }
-
-    public void setStockEntryId(Long stockEntryId) {
-        this.stockEntryId = stockEntryId;
-    }
-
     public Long getProductId() {
         return productId;
     }
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Long getStockEntryId() {
+        return stockEntryId;
+    }
+
+    public void setStockEntryId(Long stockEntryId) {
+        this.stockEntryId = stockEntryId;
     }
 
     @Override
@@ -96,8 +96,8 @@ public class EntryLineItemDTO implements Serializable {
             ", quantityAdjustment=" + getQuantityAdjustment() +
             ", valueAdjustment=" + getValueAdjustment() +
             ", description='" + getDescription() + "'" +
-            ", stockEntry=" + getStockEntryId() +
-            ", product=" + getProductId() +
+            ", productId=" + getProductId() +
+            ", stockEntryId=" + getStockEntryId() +
             "}";
     }
 }

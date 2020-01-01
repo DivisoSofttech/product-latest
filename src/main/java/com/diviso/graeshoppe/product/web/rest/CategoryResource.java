@@ -2,8 +2,9 @@ package com.diviso.graeshoppe.product.web.rest;
 import com.diviso.graeshoppe.product.domain.Category;
 import com.diviso.graeshoppe.product.service.CategoryService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.mapper.CategoryMapper;
 
@@ -13,6 +14,7 @@ import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,6 +42,9 @@ public class CategoryResource {
     private static final String ENTITY_NAME = "productCategory";
 
     private final CategoryService categoryService;
+    
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -62,7 +68,7 @@ public class CategoryResource {
         }
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity.created(new URI("/api/categories/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -83,7 +89,7 @@ public class CategoryResource {
         }
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, categoryDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categoryDTO.getId().toString()))
             .body(result);
     }
 
@@ -97,7 +103,7 @@ public class CategoryResource {
     public ResponseEntity<List<CategoryDTO>> getAllCategories(Pageable pageable) {
         log.debug("REST request to get a page of Categories");
         Page<CategoryDTO> page = categoryService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/categories");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -124,7 +130,7 @@ public class CategoryResource {
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -139,7 +145,7 @@ public class CategoryResource {
     public ResponseEntity<List<CategoryDTO>> searchCategories(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Categories for query {}", query);
         Page<CategoryDTO> page = categoryService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/categories");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

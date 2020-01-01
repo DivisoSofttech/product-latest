@@ -6,18 +6,17 @@ import com.diviso.graeshoppe.product.service.dto.StockEntryDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity StockEntry and its DTO StockEntryDTO.
+ * Mapper for the entity {@link StockEntry} and its DTO {@link StockEntryDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ReasonMapper.class, LocationMapper.class})
 public interface StockEntryMapper extends EntityMapper<StockEntryDTO, StockEntry> {
 
-    @Override
-	@Mapping(source = "reason.id", target = "reasonId")
+    @Mapping(source = "reason.id", target = "reasonId")
     @Mapping(source = "location.id", target = "locationId")
     StockEntryDTO toDto(StockEntry stockEntry);
 
-    @Override
-	@Mapping(target = "entryLineItems", ignore = true)
+    @Mapping(target = "entryLineItems", ignore = true)
+    @Mapping(target = "removeEntryLineItems", ignore = true)
     @Mapping(source = "reasonId", target = "reason")
     @Mapping(source = "locationId", target = "location")
     StockEntry toEntity(StockEntryDTO stockEntryDTO);

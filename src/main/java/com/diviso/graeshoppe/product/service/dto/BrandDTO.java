@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Brand entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Brand} entity.
  */
 public class BrandDTO implements Serializable {
 

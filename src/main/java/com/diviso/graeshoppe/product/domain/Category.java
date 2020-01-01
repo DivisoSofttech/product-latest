@@ -1,20 +1,13 @@
 package com.diviso.graeshoppe.product.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.data.elasticsearch.annotations.Setting;
-
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Category.
@@ -22,15 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "category")
-@Setting(settingPath = "settings/categorysettings.json")
-@Mapping(mappingPath = "mappings/categorymappings.json") 
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "category")
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -38,13 +30,6 @@ public class Category implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-
-    @Column(name = "image_content_type")
-    private String imageContentType;
 
     @Column(name = "image_link")
     private String imageLink;
@@ -55,6 +40,7 @@ public class Category implements Serializable {
     @OneToMany(mappedBy = "category")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Product> products = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -88,32 +74,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public Category image(byte[] image) {
-        this.image = image;
-        return this;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getImageContentType() {
-        return imageContentType;
-    }
-
-    public Category imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-        return this;
-    }
-
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
     }
 
     public String getImageLink() {
@@ -173,19 +133,15 @@ public class Category implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Category)) {
             return false;
         }
-        Category category = (Category) o;
-        if (category.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), category.getId());
+        return id != null && id.equals(((Category) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override
@@ -194,8 +150,6 @@ public class Category implements Serializable {
             "id=" + getId() +
             ", iDPcode='" + getiDPcode() + "'" +
             ", name='" + getName() + "'" +
-            ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
             ", imageLink='" + getImageLink() + "'" +
             ", description='" + getDescription() + "'" +
             "}";

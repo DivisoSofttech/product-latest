@@ -1,16 +1,13 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * A Supplier.
@@ -18,13 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "supplier")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "supplier")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "supplier")
 public class Supplier implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -172,19 +170,15 @@ public class Supplier implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Supplier)) {
             return false;
         }
-        Supplier supplier = (Supplier) o;
-        if (supplier.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), supplier.getId());
+        return id != null && id.equals(((Supplier) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

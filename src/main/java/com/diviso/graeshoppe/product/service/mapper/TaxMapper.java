@@ -6,17 +6,15 @@ import com.diviso.graeshoppe.product.service.dto.TaxDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Tax and its DTO TaxDTO.
+ * Mapper for the entity {@link Tax} and its DTO {@link TaxDTO}.
  */
 @Mapper(componentModel = "spring", uses = {TaxCategoryMapper.class})
 public interface TaxMapper extends EntityMapper<TaxDTO, Tax> {
 
-    @Override
-	@Mapping(source = "taxCategory.id", target = "taxCategoryId")
+    @Mapping(source = "taxCategory.id", target = "taxCategoryId")
     TaxDTO toDto(Tax tax);
 
-    @Override
-	@Mapping(source = "taxCategoryId", target = "taxCategory")
+    @Mapping(source = "taxCategoryId", target = "taxCategory")
     Tax toEntity(TaxDTO taxDTO);
 
     default Tax fromId(Long id) {

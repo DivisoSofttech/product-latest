@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.Contact;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the Contact entity.
+ * Spring Data Elasticsearch repository for the {@link Contact} entity.
  */
 public interface ContactSearchRepository extends ElasticsearchRepository<Contact, Long> {
 }

@@ -1,15 +1,12 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A ComboLineItem.
@@ -17,13 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "combo_line_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "combolineitem")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "combolineitem")
 public class ComboLineItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "quantity")
@@ -34,11 +32,11 @@ public class ComboLineItem implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("comboLineItems")
-    private Product product;
+    private Product comboItem;
 
     @ManyToOne
     @JsonIgnoreProperties("comboLineItems")
-    private Product comboItem;
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -75,19 +73,6 @@ public class ComboLineItem implements Serializable {
         this.description = description;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public ComboLineItem product(Product product) {
-        this.product = product;
-        return this;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Product getComboItem() {
         return comboItem;
     }
@@ -100,6 +85,19 @@ public class ComboLineItem implements Serializable {
     public void setComboItem(Product product) {
         this.comboItem = product;
     }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public ComboLineItem product(Product product) {
+        this.product = product;
+        return this;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -107,19 +105,15 @@ public class ComboLineItem implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ComboLineItem)) {
             return false;
         }
-        ComboLineItem comboLineItem = (ComboLineItem) o;
-        if (comboLineItem.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), comboLineItem.getId());
+        return id != null && id.equals(((ComboLineItem) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

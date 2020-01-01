@@ -6,19 +6,17 @@ import com.diviso.graeshoppe.product.service.dto.EntryLineItemDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity EntryLineItem and its DTO EntryLineItemDTO.
+ * Mapper for the entity {@link EntryLineItem} and its DTO {@link EntryLineItemDTO}.
  */
-@Mapper(componentModel = "spring", uses = {StockEntryMapper.class, ProductMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductMapper.class, StockEntryMapper.class})
 public interface EntryLineItemMapper extends EntityMapper<EntryLineItemDTO, EntryLineItem> {
 
-    @Override
-	@Mapping(source = "stockEntry.id", target = "stockEntryId")
     @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "stockEntry.id", target = "stockEntryId")
     EntryLineItemDTO toDto(EntryLineItem entryLineItem);
 
-    @Override
-	@Mapping(source = "stockEntryId", target = "stockEntry")
     @Mapping(source = "productId", target = "product")
+    @Mapping(source = "stockEntryId", target = "stockEntry")
     EntryLineItem toEntity(EntryLineItemDTO entryLineItemDTO);
 
     default EntryLineItem fromId(Long id) {

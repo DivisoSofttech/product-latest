@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.StockEntry;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the StockEntry entity.
+ * Spring Data Elasticsearch repository for the {@link StockEntry} entity.
  */
 public interface StockEntrySearchRepository extends ElasticsearchRepository<StockEntry, Long> {
 }

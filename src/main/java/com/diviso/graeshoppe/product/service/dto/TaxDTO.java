@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Tax entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Tax} entity.
  */
 public class TaxDTO implements Serializable {
 
@@ -86,7 +86,7 @@ public class TaxDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", rate=" + getRate() +
             ", description='" + getDescription() + "'" +
-            ", taxCategory=" + getTaxCategoryId() +
+            ", taxCategoryId=" + getTaxCategoryId() +
             "}";
     }
 }

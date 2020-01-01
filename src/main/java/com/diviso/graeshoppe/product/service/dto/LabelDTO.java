@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Label entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Label} entity.
  */
 public class LabelDTO implements Serializable {
 
@@ -75,7 +75,7 @@ public class LabelDTO implements Serializable {
             "id=" + getId() +
             ", iDPcode='" + getiDPcode() + "'" +
             ", name='" + getName() + "'" +
-            ", product=" + getProductId() +
+            ", productId=" + getProductId() +
             "}";
     }
 }

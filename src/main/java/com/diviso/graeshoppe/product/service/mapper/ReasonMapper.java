@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.ReasonDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Reason and its DTO ReasonDTO.
+ * Mapper for the entity {@link Reason} and its DTO {@link ReasonDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface ReasonMapper extends EntityMapper<ReasonDTO, Reason> {

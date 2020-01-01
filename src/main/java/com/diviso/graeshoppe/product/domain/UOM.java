@@ -1,14 +1,11 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A UOM.
@@ -16,13 +13,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "uom")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "uom")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "uom")
 public class UOM implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -88,19 +86,15 @@ public class UOM implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof UOM)) {
             return false;
         }
-        UOM uOM = (UOM) o;
-        if (uOM.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), uOM.getId());
+        return id != null && id.equals(((UOM) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

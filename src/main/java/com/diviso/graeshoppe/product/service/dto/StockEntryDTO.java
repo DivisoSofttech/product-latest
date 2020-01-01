@@ -1,10 +1,10 @@
 package com.diviso.graeshoppe.product.service.dto;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the StockEntry entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.StockEntry} entity.
  */
 public class StockEntryDTO implements Serializable {
 
@@ -14,7 +14,7 @@ public class StockEntryDTO implements Serializable {
 
     private String reference;
 
-    private LocalDate date;
+    private Instant date;
 
     private String description;
 
@@ -47,11 +47,11 @@ public class StockEntryDTO implements Serializable {
         this.reference = reference;
     }
 
-    public LocalDate getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
@@ -108,8 +108,8 @@ public class StockEntryDTO implements Serializable {
             ", reference='" + getReference() + "'" +
             ", date='" + getDate() + "'" +
             ", description='" + getDescription() + "'" +
-            ", reason=" + getReasonId() +
-            ", location=" + getLocationId() +
+            ", reasonId=" + getReasonId() +
+            ", locationId=" + getLocationId() +
             "}";
     }
 }

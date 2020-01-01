@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Supplier entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Supplier} entity.
  */
 public class SupplierDTO implements Serializable {
 
@@ -130,8 +130,8 @@ public class SupplierDTO implements Serializable {
             ", currentDebt=" + getCurrentDebt() +
             ", debtDate='" + getDebtDate() + "'" +
             ", visible='" + isVisible() + "'" +
-            ", contact=" + getContactId() +
-            ", address=" + getAddressId() +
+            ", contactId=" + getContactId() +
+            ", addressId=" + getAddressId() +
             "}";
     }
 }

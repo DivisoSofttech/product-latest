@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Discount entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Discount} entity.
  */
 public class DiscountDTO implements Serializable {
 

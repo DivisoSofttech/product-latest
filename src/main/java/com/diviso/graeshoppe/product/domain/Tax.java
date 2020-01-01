@@ -1,15 +1,12 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Tax.
@@ -17,13 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "tax")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "tax")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "tax")
 public class Tax implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "name")
@@ -106,19 +104,15 @@ public class Tax implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Tax)) {
             return false;
         }
-        Tax tax = (Tax) o;
-        if (tax.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), tax.getId());
+        return id != null && id.equals(((Tax) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

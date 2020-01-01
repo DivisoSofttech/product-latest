@@ -1,14 +1,16 @@
 package com.diviso.graeshoppe.product.web.rest;
 import com.diviso.graeshoppe.product.service.StockCurrentService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import com.diviso.graeshoppe.product.service.dto.StockCurrentDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import net.sf.jasperreports.engine.JRException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,6 +39,10 @@ public class StockCurrentResource {
 
     private final StockCurrentService stockCurrentService;
 
+    
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+    
     public StockCurrentResource(StockCurrentService stockCurrentService) {
         this.stockCurrentService = stockCurrentService;
     }
@@ -56,7 +63,7 @@ public class StockCurrentResource {
         StockCurrentDTO result= stockCurrentService.save(stockCurrentDTO);
 
         return ResponseEntity.created(new URI("/api/stock-currents/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true,ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -78,7 +85,7 @@ public class StockCurrentResource {
         StockCurrentDTO result = stockCurrentService.save(stockCurrentDTO);
         result=stockCurrentService.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, stockCurrentDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true,ENTITY_NAME, stockCurrentDTO.getId().toString()))
             .body(result);
     }
 
@@ -98,7 +105,7 @@ public class StockCurrentResource {
         }
         log.debug("REST request to get a page of StockCurrents");
         Page<StockCurrentDTO> page = stockCurrentService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stock-currents");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -137,7 +144,7 @@ public class StockCurrentResource {
     public ResponseEntity<Void> deleteStockCurrent(@PathVariable Long id) {
         log.debug("REST request to delete StockCurrent : {}", id);
         stockCurrentService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -152,7 +159,7 @@ public class StockCurrentResource {
     public ResponseEntity<List<StockCurrentDTO>> searchStockCurrents(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of StockCurrents for query {}", query);
         Page<StockCurrentDTO> page = stockCurrentService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/stock-currents");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
     

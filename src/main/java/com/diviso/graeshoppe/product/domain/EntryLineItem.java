@@ -1,15 +1,12 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A EntryLineItem.
@@ -17,13 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "entry_line_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "entrylineitem")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "entrylineitem")
 public class EntryLineItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "quantity_adjustment")
@@ -37,11 +35,11 @@ public class EntryLineItem implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("entryLineItems")
-    private StockEntry stockEntry;
+    private Product product;
 
     @ManyToOne
     @JsonIgnoreProperties("entryLineItems")
-    private Product product;
+    private StockEntry stockEntry;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -91,19 +89,6 @@ public class EntryLineItem implements Serializable {
         this.description = description;
     }
 
-    public StockEntry getStockEntry() {
-        return stockEntry;
-    }
-
-    public EntryLineItem stockEntry(StockEntry stockEntry) {
-        this.stockEntry = stockEntry;
-        return this;
-    }
-
-    public void setStockEntry(StockEntry stockEntry) {
-        this.stockEntry = stockEntry;
-    }
-
     public Product getProduct() {
         return product;
     }
@@ -116,6 +101,19 @@ public class EntryLineItem implements Serializable {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public StockEntry getStockEntry() {
+        return stockEntry;
+    }
+
+    public EntryLineItem stockEntry(StockEntry stockEntry) {
+        this.stockEntry = stockEntry;
+        return this;
+    }
+
+    public void setStockEntry(StockEntry stockEntry) {
+        this.stockEntry = stockEntry;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -123,19 +121,15 @@ public class EntryLineItem implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof EntryLineItem)) {
             return false;
         }
-        EntryLineItem entryLineItem = (EntryLineItem) o;
-        if (entryLineItem.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), entryLineItem.getId());
+        return id != null && id.equals(((EntryLineItem) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

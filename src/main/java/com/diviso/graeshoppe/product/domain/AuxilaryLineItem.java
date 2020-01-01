@@ -1,15 +1,12 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A AuxilaryLineItem.
@@ -17,13 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "auxilary_line_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "auxilarylineitem")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "auxilarylineitem")
 public class AuxilaryLineItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "description")
@@ -33,14 +31,12 @@ public class AuxilaryLineItem implements Serializable {
     private Double quantity;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("auxilaryLineItems")
-    private Product product;
-
-    @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("auxilaryLineItems")
     private Product auxilaryItem;
+
+    @ManyToOne
+    @JsonIgnoreProperties("auxilaryLineItems")
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -77,19 +73,6 @@ public class AuxilaryLineItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public AuxilaryLineItem product(Product product) {
-        this.product = product;
-        return this;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Product getAuxilaryItem() {
         return auxilaryItem;
     }
@@ -102,6 +85,19 @@ public class AuxilaryLineItem implements Serializable {
     public void setAuxilaryItem(Product product) {
         this.auxilaryItem = product;
     }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public AuxilaryLineItem product(Product product) {
+        this.product = product;
+        return this;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -109,20 +105,15 @@ public class AuxilaryLineItem implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof AuxilaryLineItem)) {
             return false;
         }
-        AuxilaryLineItem auxilaryLineItem = (AuxilaryLineItem) o;
-        if (auxilaryLineItem.getId() == null || getId() == null) {
-            return false;
-        }
-       
-        return Objects.equals(getId(), auxilaryLineItem.getId());
+        return id != null && id.equals(((AuxilaryLineItem) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Reason entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Reason} entity.
  */
 public class ReasonDTO implements Serializable {
 

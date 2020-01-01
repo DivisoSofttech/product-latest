@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.DiscountDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Discount and its DTO DiscountDTO.
+ * Mapper for the entity {@link Discount} and its DTO {@link DiscountDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface DiscountMapper extends EntityMapper<DiscountDTO, Discount> {

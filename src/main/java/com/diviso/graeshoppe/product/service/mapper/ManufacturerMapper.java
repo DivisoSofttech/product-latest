@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.ManufacturerDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Manufacturer and its DTO ManufacturerDTO.
+ * Mapper for the entity {@link Manufacturer} and its DTO {@link ManufacturerDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface ManufacturerMapper extends EntityMapper<ManufacturerDTO, Manufacturer> {

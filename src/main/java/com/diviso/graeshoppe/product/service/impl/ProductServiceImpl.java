@@ -89,30 +89,18 @@ public class ProductServiceImpl implements ProductService {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
 		
-		if(product.getImage()!=null)  
+		if(productDTO.getImage()!=null)  
 		{
 		String imageLink  = imageService.saveFile("product", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
-		product.setImage(null);
-		product.setImageContentType(null);
 		
 		}
 		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
 		product.setiDPcode(currentUserLogin.get());
 
-		// .............stockcurrent not saving hack...............
-		/*
-		 * StockCurrentDTO stockCurrentDTO = new StockCurrentDTO();
-		 * stockCurrentDTO.setUnits(0.0); stockCurrentServiceImpl.save(stockCurrentDTO);
-		 * log.debug("Request to get stockCurrentDTO : {}", stockCurrentDTO);
-		 */
-		// .............stockcurrent not saving hack...............
-
-		// product.getStockCurrent().getId();
 		product = productRepository.save(product);
 		ProductDTO result = productMapper.toDto(product);
 		productSearchRepository.save(product);
-		// saving image to minio
 		return updateToEs(result);
 	}
 	
@@ -120,13 +108,11 @@ public class ProductServiceImpl implements ProductService {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
 		
-		if(product.getImage()!=null)  
+		if(productDTO.getImage()!=null)  
 		{
 		String imageLink  = imageService.saveFile("product", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
-		product.setImage(null);
-		product.setImageContentType(null);
-		
+
 		}
 		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
 		product.setiDPcode(currentUserLogin.get());

@@ -1,18 +1,12 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.data.elasticsearch.annotations.Setting;
-
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A StockCurrent.
@@ -20,15 +14,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "stock_current")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "stockcurrent")
-@Setting(settingPath = "settings/stockcurrentsettings.json")
-@Mapping(mappingPath = "mappings/stockcurrent.json") 
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "stockcurrent")
 public class StockCurrent implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -44,7 +37,6 @@ public class StockCurrent implements Serializable {
     private String notes;
 
     @ManyToOne
-    //@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("stockCurrents")
     private Product product;
 
@@ -128,19 +120,15 @@ public class StockCurrent implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof StockCurrent)) {
             return false;
         }
-        StockCurrent stockCurrent = (StockCurrent) o;
-        if (stockCurrent.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), stockCurrent.getId());
+        return id != null && id.equals(((StockCurrent) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

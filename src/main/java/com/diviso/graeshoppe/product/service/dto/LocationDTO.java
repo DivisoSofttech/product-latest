@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Location entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Location} entity.
  */
 public class LocationDTO implements Serializable {
 
@@ -86,7 +86,7 @@ public class LocationDTO implements Serializable {
             ", iDPcode='" + getiDPcode() + "'" +
             ", name='" + getName() + "'" +
             ", latLon='" + getLatLon() + "'" +
-            ", address=" + getAddressId() +
+            ", addressId=" + getAddressId() +
             "}";
     }
 }

@@ -6,19 +6,17 @@ import com.diviso.graeshoppe.product.service.dto.ComboLineItemDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity ComboLineItem and its DTO ComboLineItemDTO.
+ * Mapper for the entity {@link ComboLineItem} and its DTO {@link ComboLineItemDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface ComboLineItemMapper extends EntityMapper<ComboLineItemDTO, ComboLineItem> {
 
-    @Override
-	@Mapping(source = "product.id", target = "productId")
     @Mapping(source = "comboItem.id", target = "comboItemId")
+    @Mapping(source = "product.id", target = "productId")
     ComboLineItemDTO toDto(ComboLineItem comboLineItem);
 
-    @Override
-	@Mapping(source = "productId", target = "product")
     @Mapping(source = "comboItemId", target = "comboItem")
+    @Mapping(source = "productId", target = "product")
     ComboLineItem toEntity(ComboLineItemDTO comboLineItemDTO);
 
     default ComboLineItem fromId(Long id) {

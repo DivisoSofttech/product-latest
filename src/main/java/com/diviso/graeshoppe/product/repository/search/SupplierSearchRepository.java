@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.Supplier;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the Supplier entity.
+ * Spring Data Elasticsearch repository for the {@link Supplier} entity.
  */
 public interface SupplierSearchRepository extends ElasticsearchRepository<Supplier, Long> {
 }

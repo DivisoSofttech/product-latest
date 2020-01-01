@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the StockCurrent entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.StockCurrent} entity.
  */
 public class StockCurrentDTO implements Serializable {
 
@@ -12,7 +12,7 @@ public class StockCurrentDTO implements Serializable {
     private String iDPcode;
 
     private Double quantity;
-                                               
+
     private Double sellPrice;
 
     private String notes;
@@ -97,7 +97,7 @@ public class StockCurrentDTO implements Serializable {
             ", quantity=" + getQuantity() +
             ", sellPrice=" + getSellPrice() +
             ", notes='" + getNotes() + "'" +
-            ", product=" + getProductId() +
+            ", productId=" + getProductId() +
             "}";
     }
 }

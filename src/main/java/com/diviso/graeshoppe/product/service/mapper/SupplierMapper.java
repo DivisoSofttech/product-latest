@@ -6,18 +6,16 @@ import com.diviso.graeshoppe.product.service.dto.SupplierDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Supplier and its DTO SupplierDTO.
+ * Mapper for the entity {@link Supplier} and its DTO {@link SupplierDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ContactMapper.class, AddressMapper.class})
 public interface SupplierMapper extends EntityMapper<SupplierDTO, Supplier> {
 
-    @Override
-	@Mapping(source = "contact.id", target = "contactId")
+    @Mapping(source = "contact.id", target = "contactId")
     @Mapping(source = "address.id", target = "addressId")
     SupplierDTO toDto(Supplier supplier);
 
-    @Override
-	@Mapping(source = "contactId", target = "contact")
+    @Mapping(source = "contactId", target = "contact")
     @Mapping(source = "addressId", target = "address")
     Supplier toEntity(SupplierDTO supplierDTO);
 

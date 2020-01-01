@@ -2,7 +2,6 @@ entity Product {
 	reference String,
     name String,
     showInCatalogue Boolean,
-    image ImageBlob,
     imageLink String,
     isActive Boolean,
     sku String,
@@ -62,7 +61,6 @@ entity UOM{
 entity Category{
 	IDPcode String,
     name String,
-    image ImageBlob,
     imageLink String,
     description String
 }
@@ -92,7 +90,7 @@ entity Address{
 entity StockEntry{
     IDPcode String,
 	reference String,
-	date LocalDate,
+	date Instant,
     description String
 }
 entity EntryLineItem{

@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.UOM;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the UOM entity.
+ * Spring Data Elasticsearch repository for the {@link UOM} entity.
  */
 public interface UOMSearchRepository extends ElasticsearchRepository<UOM, Long> {
 }

@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.ComboLineItem;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the ComboLineItem entity.
+ * Spring Data Elasticsearch repository for the {@link ComboLineItem} entity.
  */
 public interface ComboLineItemSearchRepository extends ElasticsearchRepository<ComboLineItem, Long> {
 }

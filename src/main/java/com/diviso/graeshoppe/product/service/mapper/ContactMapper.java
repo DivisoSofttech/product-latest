@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.ContactDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Contact and its DTO ContactDTO.
+ * Mapper for the entity {@link Contact} and its DTO {@link ContactDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface ContactMapper extends EntityMapper<ContactDTO, Contact> {

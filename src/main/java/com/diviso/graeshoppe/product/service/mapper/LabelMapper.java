@@ -6,17 +6,15 @@ import com.diviso.graeshoppe.product.service.dto.LabelDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Label and its DTO LabelDTO.
+ * Mapper for the entity {@link Label} and its DTO {@link LabelDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface LabelMapper extends EntityMapper<LabelDTO, Label> {
 
-    @Override
-	@Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "product.id", target = "productId")
     LabelDTO toDto(Label label);
 
-    @Override
-	@Mapping(source = "productId", target = "product")
+    @Mapping(source = "productId", target = "product")
     Label toEntity(LabelDTO labelDTO);
 
     default Label fromId(Long id) {

@@ -6,19 +6,17 @@ import com.diviso.graeshoppe.product.service.dto.AuxilaryLineItemDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity AuxilaryLineItem and its DTO AuxilaryLineItemDTO.
+ * Mapper for the entity {@link AuxilaryLineItem} and its DTO {@link AuxilaryLineItemDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface AuxilaryLineItemMapper extends EntityMapper<AuxilaryLineItemDTO, AuxilaryLineItem> {
 
-    @Override
-	@Mapping(source = "product.id", target = "productId")
     @Mapping(source = "auxilaryItem.id", target = "auxilaryItemId")
+    @Mapping(source = "product.id", target = "productId")
     AuxilaryLineItemDTO toDto(AuxilaryLineItem auxilaryLineItem);
 
-    @Override
-	@Mapping(source = "productId", target = "product")
     @Mapping(source = "auxilaryItemId", target = "auxilaryItem")
+    @Mapping(source = "productId", target = "product")
     AuxilaryLineItem toEntity(AuxilaryLineItemDTO auxilaryLineItemDTO);
 
     default AuxilaryLineItem fromId(Long id) {

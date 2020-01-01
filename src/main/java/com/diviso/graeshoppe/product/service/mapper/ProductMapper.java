@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity Product and its DTO ProductDTO.
+ * Mapper for the entity {@link Product} and its DTO {@link ProductDTO}.
  */
 @Mapper(componentModel = "spring", uses = {TaxCategoryMapper.class, UOMMapper.class, LocationMapper.class, SupplierMapper.class, ManufacturerMapper.class, BrandMapper.class, DiscountMapper.class, CategoryMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
@@ -22,8 +22,11 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     ProductDTO toDto(Product product);
 
     @Mapping(target = "auxilaryLineItems", ignore = true)
+    @Mapping(target = "removeAuxilaryLineItems", ignore = true)
     @Mapping(target = "comboLineItems", ignore = true)
+    @Mapping(target = "removeComboLineItems", ignore = true)
     @Mapping(target = "labels", ignore = true)
+    @Mapping(target = "removeLabels", ignore = true)
     @Mapping(source = "taxCategoryId", target = "taxCategory")
     @Mapping(source = "unitId", target = "unit")
     @Mapping(source = "locationId", target = "location")

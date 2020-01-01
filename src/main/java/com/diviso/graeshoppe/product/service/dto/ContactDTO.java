@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Contact entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.Contact} entity.
  */
 public class ContactDTO implements Serializable {
 

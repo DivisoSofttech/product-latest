@@ -1,17 +1,20 @@
 package com.diviso.graeshoppe.product.web.rest;
 import com.diviso.graeshoppe.product.service.ContactService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import com.diviso.graeshoppe.product.service.dto.ContactDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,6 +34,10 @@ public class ContactResource {
     private static final String ENTITY_NAME = "productContact";
 
     private final ContactService contactService;
+    
+    
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     public ContactResource(ContactService contactService) {
         this.contactService = contactService;
@@ -51,7 +58,7 @@ public class ContactResource {
         }
         ContactDTO result = contactService.save(contactDTO);
         return ResponseEntity.created(new URI("/api/contacts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -72,7 +79,7 @@ public class ContactResource {
         }
         ContactDTO result = contactService.save(contactDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, contactDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, contactDTO.getId().toString()))
             .body(result);
     }
 
@@ -86,7 +93,7 @@ public class ContactResource {
     public ResponseEntity<List<ContactDTO>> getAllContacts(Pageable pageable) {
         log.debug("REST request to get a page of Contacts");
         Page<ContactDTO> page = contactService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -113,7 +120,7 @@ public class ContactResource {
     public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         log.debug("REST request to delete Contact : {}", id);
         contactService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -128,7 +135,7 @@ public class ContactResource {
     public ResponseEntity<List<ContactDTO>> searchContacts(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Contacts for query {}", query);
         Page<ContactDTO> page = contactService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/contacts");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

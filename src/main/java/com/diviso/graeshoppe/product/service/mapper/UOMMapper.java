@@ -6,7 +6,7 @@ import com.diviso.graeshoppe.product.service.dto.UOMDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity UOM and its DTO UOMDTO.
+ * Mapper for the entity {@link UOM} and its DTO {@link UOMDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface UOMMapper extends EntityMapper<UOMDTO, UOM> {

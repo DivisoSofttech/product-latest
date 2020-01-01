@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the ComboLineItem entity.
+ * A DTO for the {@link com.diviso.graeshoppe.product.domain.ComboLineItem} entity.
  */
 public class ComboLineItemDTO implements Serializable {
 
@@ -14,9 +14,9 @@ public class ComboLineItemDTO implements Serializable {
     private String description;
 
 
-    private Long productId;
-
     private Long comboItemId;
+
+    private Long productId;
 
     public Long getId() {
         return id;
@@ -42,20 +42,20 @@ public class ComboLineItemDTO implements Serializable {
         this.description = description;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
     public Long getComboItemId() {
         return comboItemId;
     }
 
     public void setComboItemId(Long productId) {
         this.comboItemId = productId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class ComboLineItemDTO implements Serializable {
             "id=" + getId() +
             ", quantity=" + getQuantity() +
             ", description='" + getDescription() + "'" +
-            ", product=" + getProductId() +
-            ", comboItem=" + getComboItemId() +
+            ", comboItemId=" + getComboItemId() +
+            ", productId=" + getProductId() +
             "}";
     }
 }

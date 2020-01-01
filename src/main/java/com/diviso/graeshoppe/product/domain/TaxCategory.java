@@ -1,16 +1,13 @@
 package com.diviso.graeshoppe.product.domain;
-
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A TaxCategory.
@@ -18,13 +15,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "tax_category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "taxcategory")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "taxcategory")
 public class TaxCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(name = "i_d_pcode")
@@ -36,9 +34,10 @@ public class TaxCategory implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "taxCategory",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "taxCategory")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Tax> taxes = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -118,19 +117,15 @@ public class TaxCategory implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof TaxCategory)) {
             return false;
         }
-        TaxCategory taxCategory = (TaxCategory) o;
-        if (taxCategory.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), taxCategory.getId());
+        return id != null && id.equals(((TaxCategory) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

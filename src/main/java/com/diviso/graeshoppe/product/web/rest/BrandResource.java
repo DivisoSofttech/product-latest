@@ -1,17 +1,20 @@
 package com.diviso.graeshoppe.product.web.rest;
 import com.diviso.graeshoppe.product.service.BrandService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import com.diviso.graeshoppe.product.service.dto.BrandDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,6 +34,9 @@ public class BrandResource {
     private static final String ENTITY_NAME = "productBrand";
 
     private final BrandService brandService;
+    
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     public BrandResource(BrandService brandService) {
         this.brandService = brandService;
@@ -51,7 +57,7 @@ public class BrandResource {
         }
         BrandDTO result = brandService.save(brandDTO);
         return ResponseEntity.created(new URI("/api/brands/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -72,7 +78,7 @@ public class BrandResource {
         }
         BrandDTO result = brandService.save(brandDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, brandDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, brandDTO.getId().toString()))
             .body(result);
     }
 
@@ -86,7 +92,7 @@ public class BrandResource {
     public ResponseEntity<List<BrandDTO>> getAllBrands(Pageable pageable) {
         log.debug("REST request to get a page of Brands");
         Page<BrandDTO> page = brandService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/brands");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -113,7 +119,7 @@ public class BrandResource {
     public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
         log.debug("REST request to delete Brand : {}", id);
         brandService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -128,7 +134,7 @@ public class BrandResource {
     public ResponseEntity<List<BrandDTO>> searchBrands(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Brands for query {}", query);
         Page<BrandDTO> page = brandService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/brands");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

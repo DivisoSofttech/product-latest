@@ -1,21 +1,25 @@
 package com.diviso.graeshoppe.product.web.rest;
 import com.diviso.graeshoppe.product.service.AddressService;
 import com.diviso.graeshoppe.product.web.rest.errors.BadRequestAlertException;
-import com.diviso.graeshoppe.product.web.rest.util.HeaderUtil;
-import com.diviso.graeshoppe.product.web.rest.util.PaginationUtil;
 import com.diviso.graeshoppe.product.service.dto.AddressDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +35,9 @@ public class AddressResource {
     private static final String ENTITY_NAME = "productAddress";
 
     private final AddressService addressService;
+    
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     public AddressResource(AddressService addressService) {
         this.addressService = addressService;
@@ -51,7 +58,7 @@ public class AddressResource {
         }
         AddressDTO result = addressService.save(addressDTO);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true,ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -72,7 +79,7 @@ public class AddressResource {
         }
         AddressDTO result = addressService.save(addressDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, addressDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, addressDTO.getId().toString()))
             .body(result);
     }
 
@@ -86,7 +93,7 @@ public class AddressResource {
     public ResponseEntity<List<AddressDTO>> getAllAddresses(Pageable pageable) {
         log.debug("REST request to get a page of Addresses");
         Page<AddressDTO> page = addressService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/addresses");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -113,7 +120,7 @@ public class AddressResource {
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
         addressService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -128,7 +135,7 @@ public class AddressResource {
     public ResponseEntity<List<AddressDTO>> searchAddresses(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Addresses for query {}", query);
         Page<AddressDTO> page = addressService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/addresses");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

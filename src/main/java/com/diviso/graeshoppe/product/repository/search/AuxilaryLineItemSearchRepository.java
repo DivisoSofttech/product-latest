@@ -4,7 +4,7 @@ import com.diviso.graeshoppe.product.domain.AuxilaryLineItem;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the AuxilaryLineItem entity.
+ * Spring Data Elasticsearch repository for the {@link AuxilaryLineItem} entity.
  */
 public interface AuxilaryLineItemSearchRepository extends ElasticsearchRepository<AuxilaryLineItem, Long> {
 }
