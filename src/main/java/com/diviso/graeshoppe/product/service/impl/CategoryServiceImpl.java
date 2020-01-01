@@ -1,5 +1,5 @@
 package com.diviso.graeshoppe.product.service.impl;
-
+import com.diviso.graeshoppe.product.repository.search.ProductSuggestionSearchRepository ;
 import com.diviso.graeshoppe.product.service.CategoryService;
 import com.diviso.graeshoppe.product.service.ImageService;
 import com.diviso.graeshoppe.product.domain.Category;
@@ -7,7 +7,7 @@ import com.diviso.graeshoppe.product.repository.CategoryRepository;
 import com.diviso.graeshoppe.product.repository.search.CategorySearchRepository;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.mapper.CategoryMapper;
-
+import com.diviso.graeshoppe.product.domain.search.ProductSuggestion;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -29,9 +29,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.sql.DataSource;
-
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.diviso.graeshoppe.product.domain.search.ProductSuggestion;
 /**
  * Service Implementation for managing Category.
  */
@@ -54,6 +54,10 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     private final CategorySearchRepository categorySearchRepository;
+    
+    @Autowired
+    ProductSuggestionSearchRepository  productSuggestionSearchRepository;
+    
 
     public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, CategorySearchRepository categorySearchRepository) {
         this.categoryRepository = categoryRepository;
@@ -79,6 +83,15 @@ public class CategoryServiceImpl implements CategoryService {
 	
 		}
         category = categoryRepository.save(category);
+        
+        ProductSuggestion  productSuggestion = new ProductSuggestion();
+        productSuggestion.setId(category.getId());
+      Completion completion=  new Completion(new String[] {category.getName()});
+      completion.setWeight(2);
+        productSuggestion.setSuggest(completion);
+        productSuggestionSearchRepository.save(productSuggestion);
+        
+        
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);
         return updateToEs(result);
