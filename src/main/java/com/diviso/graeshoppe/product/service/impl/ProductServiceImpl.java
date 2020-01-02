@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.diviso.graeshoppe.product.domain.Product;
@@ -24,7 +23,6 @@ import com.diviso.graeshoppe.product.domain.StockCurrent;
 import com.diviso.graeshoppe.product.repository.ProductRepository;
 import com.diviso.graeshoppe.product.repository.StockCurrentRepository;
 import com.diviso.graeshoppe.product.repository.search.ProductSearchRepository;
-import com.diviso.graeshoppe.product.repository.search.ProductSuggestionSearchRepository;
 import com.diviso.graeshoppe.product.repository.search.StockCurrentSearchRepository;
 import com.diviso.graeshoppe.product.security.SecurityUtils;
 import com.diviso.graeshoppe.product.service.ImageService;
@@ -38,7 +36,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import com.diviso.graeshoppe.product.domain.search.ProductSuggestion;
+
 /**
  * Service Implementation for managing Product.
  */
@@ -54,8 +52,6 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductSearchRepository productSearchRepository;
 
-    @Autowired
-    ProductSuggestionSearchRepository  productSuggestionSearchRepository;
 	@Autowired
 	private ImageService imageService;
 	
@@ -92,8 +88,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO save(ProductDTO productDTO) {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
-		
-	
+
 		String imageLink  = imageService.saveFile("product", UUID.randomUUID().toString(), productDTO.getImage());
 		product.setImageLink(imageLink);
 		
@@ -102,16 +97,6 @@ public class ProductServiceImpl implements ProductService {
 		product.setiDPcode(currentUserLogin.get());
 
 		product = productRepository.save(product);
-		
-		  ProductSuggestion  productSuggestion = new ProductSuggestion();
-	        productSuggestion.setId(product.getId());
-	      Completion completion=  new Completion(new String[] {product.getName()});
-	      completion.setWeight(3);
-	        productSuggestion.setSuggest(completion);
-	        productSuggestionSearchRepository.save(productSuggestion);
-		
-		
-		
 		ProductDTO result = productMapper.toDto(product);
 		productSearchRepository.save(product);
 		return updateToEs(result);
@@ -134,6 +119,25 @@ public class ProductServiceImpl implements ProductService {
 		productSearchRepository.save(product);
 
 		return result;
+	}
+	
+	@Override
+	public ProductDTO update(ProductDTO productDTO) {
+		log.debug("Request to update Product : {}", productDTO);
+		Product product = productMapper.toEntity(productDTO);
+
+		if(productDTO.getImage()!=null) {
+		String imageLink  = imageService.saveFile("product", UUID.randomUUID().toString(), productDTO.getImage());
+		product.setImageLink(imageLink);
+		
+		}
+		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+		product.setiDPcode(currentUserLogin.get());
+
+		product = productRepository.save(product);
+		ProductDTO result = productMapper.toDto(product);
+		productSearchRepository.save(product);
+		return updateToEs(result);
 	}
 
 	/**

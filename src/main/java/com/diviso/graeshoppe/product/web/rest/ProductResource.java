@@ -115,7 +115,7 @@ public class ProductResource {
 		if (productDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
-		ProductDTO result = productService.save(productDTO);
+		ProductDTO result = productService.update(productDTO);
 		
 		
 		Optional<StockCurrentDTO> stockCurrentDTO=stockCurrentService.findByProductId(result.getId());

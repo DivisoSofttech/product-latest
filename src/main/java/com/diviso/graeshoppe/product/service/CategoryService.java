@@ -1,6 +1,7 @@
 package com.diviso.graeshoppe.product.service;
 
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
+import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -21,6 +22,8 @@ public interface CategoryService {
      * @return the persisted entity
      */
     CategoryDTO save(CategoryDTO categoryDTO);
+    
+    CategoryDTO update(CategoryDTO categoryDTO);
 
     /**
      * Get all the categories.

@@ -20,6 +20,8 @@ public interface ProductService {
      * @return the persisted entity
      */
     ProductDTO save(ProductDTO productDTO);
+    
+	 ProductDTO update(ProductDTO productDTO);
 
     /**
      * Get all the products.
