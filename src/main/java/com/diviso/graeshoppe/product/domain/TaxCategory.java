@@ -34,7 +34,7 @@ public class TaxCategory implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "taxCategory")
+    @OneToMany(mappedBy = "taxCategory", cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Tax> taxes = new HashSet<>();
 
