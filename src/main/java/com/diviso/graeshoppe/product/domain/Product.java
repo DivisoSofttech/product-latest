@@ -104,7 +104,7 @@ public class Product implements Serializable {
     @JsonIgnoreProperties("products")
     private Brand brand;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JsonIgnoreProperties("products")
     private Discount discount;
 
