@@ -3,6 +3,7 @@ package com.diviso.graeshoppe.product.service.impl;
 import com.diviso.graeshoppe.product.service.CategoryService;
 import com.diviso.graeshoppe.product.service.ImageService;
 import com.diviso.graeshoppe.product.domain.Category;
+import com.diviso.graeshoppe.product.domain.search.CategorySuggestion;
 import com.diviso.graeshoppe.product.repository.CategoryRepository;
 import com.diviso.graeshoppe.product.repository.search.CategorySearchRepository;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.diviso.graeshoppe.product.repository.search.CategorySuggestionSearchRepository;
 /**
  * Service Implementation for managing Category.
  */
@@ -46,7 +48,12 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private ImageService imageService;
 	
-
+	@Autowired
+	CategorySuggestionSearchRepository categorySuggestionSearchRepository;
+	
+	
+	
+	
     private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CategoryRepository categoryRepository;
@@ -78,8 +85,16 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	
         category = categoryRepository.save(category);
+        CategorySuggestion  categorySuggestion = new CategorySuggestion();
+		categorySuggestion.setId(category.getId());
+		Completion completion=new Completion(new String[]{category.getName()});
+		completion.setWeight(2);
+		categorySuggestion.setSuggest(completion);
+        
+        
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);
+    	categorySuggestionSearchRepository.save(categorySuggestion);
         return updateToEs(result);
     }
     

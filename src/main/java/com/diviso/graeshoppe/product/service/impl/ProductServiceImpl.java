@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.diviso.graeshoppe.product.domain.Product;
@@ -36,6 +37,8 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import com.diviso.graeshoppe.product.repository.search.ProductSuggestionSearchRepository;
+import com.diviso.graeshoppe.product.domain.search.ProductSuggestion;
 
 /**
  * Service Implementation for managing Product.
@@ -66,10 +69,11 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	StockCurrentServiceImpl stockCurrentServiceImpl;
-	/*
-	 * @Autowired Connection connection;
-	 */
-
+	
+	@Autowired
+	private  ProductSuggestionSearchRepository productSuggestionSearchRepository;
+	
+	
 	public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper,
 			ProductSearchRepository productSearchRepository) {
 		this.productRepository = productRepository;
@@ -97,8 +101,17 @@ public class ProductServiceImpl implements ProductService {
 		product.setiDPcode(currentUserLogin.get());
 
 		product = productRepository.save(product);
+		
+		ProductSuggestion  productSuggestion = new ProductSuggestion();
+		productSuggestion.setId(product.getId());
+		Completion completion=new Completion(new String[]{product.getName()});
+		completion.setWeight(3);
+		productSuggestion.setSuggest(completion);
+		
 		ProductDTO result = productMapper.toDto(product);
 		productSearchRepository.save(product);
+		
+		productSuggestionSearchRepository.save(productSuggestion);
 		return updateToEs(result);
 	}
 	
