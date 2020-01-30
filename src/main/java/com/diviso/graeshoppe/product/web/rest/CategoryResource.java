@@ -72,6 +72,17 @@ public class CategoryResource {
             .body(result);
     }
 
+    @PostMapping("/upload-categories")
+    public ResponseEntity<CategoryDTO> createCategoryViaUpload(@RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
+        log.debug("REST request to save Category : {}", categoryDTO);
+        if (categoryDTO.getId() != null) {
+            throw new BadRequestAlertException("A new category cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        CategoryDTO result = categoryService.saveForFileUpLoad(categoryDTO);
+        return ResponseEntity.created(new URI("/api/categories/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
     /**
      * PUT  /categories : Updates an existing category.
      *

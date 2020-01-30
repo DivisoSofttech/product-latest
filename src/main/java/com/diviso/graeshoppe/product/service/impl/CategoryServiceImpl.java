@@ -98,6 +98,26 @@ public class CategoryServiceImpl implements CategoryService {
         return updateToEs(result);
     }
     
+    @Override
+    public CategoryDTO saveForFileUpLoad(CategoryDTO categoryDTO) {
+        log.debug("Request to save Category : {}", categoryDTO);
+        Category category = categoryMapper.toEntity(categoryDTO);
+		
+     
+	
+        category = categoryRepository.save(category);
+        CategorySuggestion  categorySuggestion = new CategorySuggestion();
+		categorySuggestion.setId(category.getId());
+		Completion completion=new Completion(new String[]{category.getName()});
+		completion.setWeight(2);
+		categorySuggestion.setSuggest(completion);
+        
+        
+        CategoryDTO result = categoryMapper.toDto(category);
+        categorySearchRepository.save(category);
+    	categorySuggestionSearchRepository.save(categorySuggestion);
+        return updateToEs(result);
+    }
     public CategoryDTO updateToEs(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);

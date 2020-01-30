@@ -60,4 +60,10 @@ public interface CategoryService {
     Page<CategoryDTO> search(String query, Pageable pageable);
 
 	byte[] exportCategoryListAsPdf(String idpcode) throws JRException;
+
+	/**
+	 * @param categoryDTO
+	 * @return
+	 */
+	CategoryDTO saveForFileUpLoad(CategoryDTO categoryDTO);
 }

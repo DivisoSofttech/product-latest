@@ -96,6 +96,32 @@ public class ProductResource {
 		return ResponseEntity.created(new URI("/api/products/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(applicationName, true,ENTITY_NAME, result.getId().toString())).body(result);
 	}
+	@PostMapping("/upload-products")
+	public ResponseEntity<ProductDTO> createProductViaProduct(@RequestBody ProductDTO productDTO) throws URISyntaxException {
+		log.debug("REST request to save Product : {}", productDTO);
+
+		StockCurrentDTO stockCurrent = new StockCurrentDTO();
+
+		
+		stockCurrent.setSellPrice(productDTO.getSellingPrice());
+
+		if (productDTO.getId() != null) {
+			throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+
+		ProductDTO result = productService.saveForFileUpLoad(productDTO);
+		
+		stockCurrent.setiDPcode(result.getiDPcode());
+		stockCurrent.setQuantity(0.0);
+		stockCurrent.setProductId(result.getId());
+		
+		stockCurrent= stockCurrentService.save(stockCurrent);
+
+		stockCurrentService.save(stockCurrent);
+
+		return ResponseEntity.created(new URI("/api/products/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(applicationName, true,ENTITY_NAME, result.getId().toString())).body(result);
+	}
 
 	/**
 	 * PUT /products : Updates an existing product.

@@ -61,6 +61,12 @@ public interface ProductService {
 
 	byte[] exportProductListAsPdf(String idpcode) throws JRException;
 
+	/**
+	 * @param productDTO
+	 * @return
+	 */
+	ProductDTO saveForFileUpLoad(ProductDTO productDTO);
+
 
    
 }

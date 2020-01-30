@@ -114,7 +114,29 @@ public class ProductServiceImpl implements ProductService {
 		productSuggestionSearchRepository.save(productSuggestion);
 		return updateToEs(result);
 	}
-	
+	@Override
+	public ProductDTO saveForFileUpLoad(ProductDTO productDTO) {
+		log.debug("Request to save Product : {}", productDTO);
+		Product product = productMapper.toEntity(productDTO);
+		
+		
+		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+		product.setiDPcode(currentUserLogin.get());
+
+		product = productRepository.save(product);
+		
+		ProductSuggestion  productSuggestion = new ProductSuggestion();
+		productSuggestion.setId(product.getId());
+		Completion completion=new Completion(new String[]{product.getName()});
+		completion.setWeight(3);
+		productSuggestion.setSuggest(completion);
+		
+		ProductDTO result = productMapper.toDto(product);
+		productSearchRepository.save(product);
+		
+		productSuggestionSearchRepository.save(productSuggestion);
+		return updateToEs(result);
+	}
 	private ProductDTO updateToEs(ProductDTO productDTO) {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
