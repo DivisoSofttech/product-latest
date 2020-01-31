@@ -38,9 +38,9 @@ import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import com.diviso.graeshoppe.product.service.dto.ProductFile;
 import com.diviso.graeshoppe.product.web.rest.*;
 import com.diviso.graeshoppe.product.service.mapper.*;
+
 /**
- * @author maya mayabytatech, 
- * maya.k.k@lxisoft.com
+ * @author maya mayabytatech, maya.k.k@lxisoft.com
  */
 
 @RestController
@@ -49,60 +49,60 @@ public class ProductLoadController {
 
 	@Autowired
 	ProductResource ProductResource;
-	
+
 	@Autowired
 	ProductMapper ProductMapper;
-	
+
 	@Autowired
 	CategoryResource CategoryResource;
-	
+
 	@Autowired
 	CategoryMapper CategoryMapper;
-	
+
 	@PostMapping("/byte-import-products")
 	public void ExcelDatatoDB(@RequestBody ProductFile file) throws IOException, URISyntaxException {
 
-		System.out.println("...........file.........."+file);
+		System.out.println("...........file.........." + file);
 		List<Product> tempDriveList = new ArrayList<Product>();
-		
-		 InputStream targetStream = new ByteArrayInputStream(file.getFile());
-		 
+
+		InputStream targetStream = new ByteArrayInputStream(file.getFile());
+
 		XSSFWorkbook workbook = new XSSFWorkbook(targetStream);
-		
+
 		XSSFSheet worksheet = workbook.getSheetAt(0);
 
 		for (int i = 0; i < worksheet.getPhysicalNumberOfRows(); i++) {
-			
+
 			Product tempProduct = new Product();
 			XSSFRow row = worksheet.getRow(i);
 			tempProduct.setName((row.getCell(0).getStringCellValue()));
 			tempProduct.setiDPcode(row.getCell(1).getStringCellValue());
-			tempProduct.setSellingPrice((double)row.getCell(2).getNumericCellValue());
+			tempProduct.setSellingPrice((double) row.getCell(2).getNumericCellValue());
 			tempProduct.setIsActive(row.getCell(3).getBooleanCellValue());
-			tempProduct.setReference(row.getCell(4).getStringCellValue());
+			// tempProduct.setReference(row.getCell(4).getStringCellValue());
 
 			Category tempCategory = new Category();
+			if (row.getCell(4).getStringCellValue() != null) {
+				tempCategory.setDescription(row.getCell(4).getStringCellValue());
+			}
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
-			
-			if(row.getCell(7).getStringCellValue()!=null) {
-			tempCategory.setDescription(row.getCell(7).getStringCellValue());
-			}
-			//System.out.println("..........P............"+tempProduct +"..........C: ............"+tempCategory);
-			
+
+			// System.out.println("..........P............"+tempProduct +"..........C:
+			// ............"+tempCategory);
+
 			ProductDTO productDTO = ProductMapper.toDto(tempProduct);
-			
+
 			CategoryDTO categoryDTO = CategoryMapper.toDto(tempCategory);
-			
-			categoryDTO =	CategoryResource.createCategoryViaUpload(categoryDTO).getBody();
-			
+
+			categoryDTO = CategoryResource.createCategoryViaUpload(categoryDTO).getBody();
+
 			productDTO.setCategoryId(categoryDTO.getId());
-			
-			
+
 			ProductResource.createProductViaProduct(productDTO);
-			
-			System.out.println("..........P............"+productDTO +"..........C: ............"+categoryDTO);
-			//tempDriveList.add(tempDrive);
+
+			System.out.println("..........P............" + productDTO + "..........C: ............" + categoryDTO);
+			// tempDriveList.add(tempDrive);
 
 		}
 	}
