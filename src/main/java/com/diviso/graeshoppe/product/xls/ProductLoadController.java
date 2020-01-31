@@ -84,8 +84,10 @@ public class ProductLoadController {
 			Category tempCategory = new Category();
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
-			tempCategory.setDescription(row.getCell(7).getStringCellValue());
 			
+			if(row.getCell(7).getStringCellValue()!=null) {
+			tempCategory.setDescription(row.getCell(7).getStringCellValue());
+			}
 			//System.out.println("..........P............"+tempProduct +"..........C: ............"+tempCategory);
 			
 			ProductDTO productDTO = ProductMapper.toDto(tempProduct);
