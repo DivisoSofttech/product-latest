@@ -119,9 +119,10 @@ public class ProductServiceImpl implements ProductService {
 		log.debug("Request to save Product : {}", productDTO);
 		Product product = productMapper.toEntity(productDTO);
 		
-		
-		Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
-		product.setiDPcode(currentUserLogin.get());
+		/*
+		 * Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+		 * product.setiDPcode(currentUserLogin.get());
+		 */
 
 		product = productRepository.save(product);
 		
