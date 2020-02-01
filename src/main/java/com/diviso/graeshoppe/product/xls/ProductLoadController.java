@@ -20,8 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -38,6 +41,7 @@ import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 import com.diviso.graeshoppe.product.service.dto.ProductFile;
 import com.diviso.graeshoppe.product.web.rest.*;
+import com.diviso.graeshoppe.product.service.*;
 import com.diviso.graeshoppe.product.service.mapper.*;
 
 /**
@@ -56,6 +60,8 @@ public class ProductLoadController {
 
 	@Autowired
 	CategoryResource CategoryResource;
+	@Autowired
+	CategoryService CategoryService;
 
 	@Autowired
 	CategoryMapper CategoryMapper;
@@ -72,8 +78,9 @@ public class ProductLoadController {
 
 		XSSFSheet worksheet = workbook.getSheetAt(0);
 
-		for (int i = 0; i < worksheet.getPhysicalNumberOfRows(); i++) {
+		for (int i = 0; i <= getLastRowWithData(worksheet); i++) {
 
+			System.out.println("....................i...." + i + "..................." + getLastRowWithData(worksheet));
 			Product tempProduct = new Product();
 			XSSFRow row = worksheet.getRow(i);
 			tempProduct.setName((row.getCell(0).getStringCellValue()));
@@ -83,30 +90,96 @@ public class ProductLoadController {
 			tempProduct.setReference(row.getCell(4).getStringCellValue());
 
 			Category tempCategory = new Category();
-		
+
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
-			
-			System.out.println("...........celllog.........."+row.getLastCellNum());
-			
-			if (row.getLastCellNum()==7)
-			{
-			tempCategory.setDescription(row.getCell(7).getStringCellValue());
+
+			System.out.println("...........celllog.........." + row.getLastCellNum());
+
+			if (row.getCell(row.getLastCellNum()) != null) {
+				
+				tempCategory.setDescription(row.getCell(7).getStringCellValue());
 			}
 
 			ProductDTO productDTO = ProductMapper.toDto(tempProduct);
 
-			CategoryDTO categoryDTO = CategoryMapper.toDto(tempCategory);
+			Category alreadyexist = CategoryService.findByName(tempCategory.getName());
 
-			categoryDTO = CategoryResource.createCategoryViaUpload(categoryDTO).getBody();
+			System.out.println("............alreadyexist category........" + alreadyexist);
 
-			productDTO.setCategoryId(categoryDTO.getId());
+			CategoryDTO categoryDTO = null;
 
-			ProductResource.createProductViaProduct(productDTO);
+			if (alreadyexist == null) {
 
-			System.out.println("..........P............" + productDTO + "..........C: ............" + categoryDTO);
-			// tempDriveList.add(tempDrive);
+				categoryDTO = CategoryMapper.toDto(tempCategory);
+
+				categoryDTO = CategoryResource.createCategoryViaUpload(categoryDTO).getBody();
+
+				productDTO.setCategoryId(categoryDTO.getId());
+
+			} else {
+				productDTO.setCategoryId(alreadyexist.getId());
+			}
+
+			ProductDTO dto = ProductResource.createProductViaProduct(productDTO).getBody();
+
+			System.out.println("..........P............" + dto + "..........C: ............" + categoryDTO + "......."
+					+ alreadyexist);
+		
 
 		}
+	}
+/*
+ * As poi doesnot contain a method getLastRowWithData we are using this code, getPhysicalNumberOfRows method available will take every rows in sheet
+ * 
+ */
+	
+	public int getLastRowWithData(XSSFSheet worksheet) {
+		int rowCount = 0;
+		Iterator<Row> iter = worksheet.rowIterator();
+
+		while (iter.hasNext()) {
+			Row r = iter.next();
+			if (!this.isRowBlank(r)) {
+				rowCount = r.getRowNum();
+			}
+		}
+
+		return rowCount;
+	}
+
+	public boolean isRowBlank(Row r) {
+		boolean ret = true;
+
+		/*
+		 * If a row is null, it must be blank.
+		 */
+		if (r != null) {
+			Iterator<Cell> cellIter = r.cellIterator();
+			/*
+			 * Iterate through all cells in a row.
+			 */
+			while (cellIter.hasNext()) {
+				/*
+				 * If one of the cells in given row contains data, the row is considered not
+				 * blank.
+				 */
+				if (!this.isCellBlank(cellIter.next())) {
+					ret = false;
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	public boolean isCellBlank(Cell c) {
+		return (c == null || c.getCellType() == Cell.CELL_TYPE_BLANK);
+	}
+
+	public boolean isCellEmpty(Cell c) {
+		return (c == null || c.getCellType() == Cell.CELL_TYPE_BLANK
+				|| (c.getCellType() == Cell.CELL_TYPE_STRING && c.getStringCellValue().isEmpty()));
 	}
 }

@@ -235,5 +235,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 		return JasperExportManager.exportReportToPdf(jp);
 	}
+
+	@Override
+	public Category findByName(String name) {
+		return categoryRepository.findByName(name);
+	}
     
 }

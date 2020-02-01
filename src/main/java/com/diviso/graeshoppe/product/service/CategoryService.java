@@ -1,5 +1,6 @@
 package com.diviso.graeshoppe.product.service;
 
+import com.diviso.graeshoppe.product.domain.Category;
 import com.diviso.graeshoppe.product.service.dto.CategoryDTO;
 import com.diviso.graeshoppe.product.service.dto.ProductDTO;
 
@@ -61,6 +62,7 @@ public interface CategoryService {
 
 	byte[] exportCategoryListAsPdf(String idpcode) throws JRException;
 
+	Category findByName(String name);
 	/**
 	 * @param categoryDTO
 	 * @return
