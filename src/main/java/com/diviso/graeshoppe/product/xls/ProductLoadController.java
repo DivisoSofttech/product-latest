@@ -79,7 +79,7 @@ public class ProductLoadController {
 			tempProduct.setName((row.getCell(0).getStringCellValue()));
 			tempProduct.setiDPcode(row.getCell(1).getStringCellValue());
 			tempProduct.setSellingPrice((double) row.getCell(2).getNumericCellValue());
-			tempProduct.setIsActive(row.getCell(3).getBooleanCellValue());
+			tempProduct.setIsAuxilaryItem(row.getCell(3).getBooleanCellValue());
 			tempProduct.setReference(row.getCell(4).getStringCellValue());
 
 			Category tempCategory = new Category();
