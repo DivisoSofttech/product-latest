@@ -85,7 +85,10 @@ public class ProductLoadController {
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
 			
-			if(row.getCell(7).getStringCellValue()!=null) {
+			if(row.getCell(7).getStringCellValue().isEmpty()) {
+			break;
+			}
+			else {
 			tempCategory.setDescription(row.getCell(7).getStringCellValue());
 			}
 			//System.out.println("..........P............"+tempProduct +"..........C: ............"+tempCategory);
