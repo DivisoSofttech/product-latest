@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,6 +86,9 @@ public class ProductLoadController {
 		
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
+			
+			Log.info("_____________________________________________"+row.getLastCellNum());
+			
 			if (row.getLastCellNum()==7)
 			{
 			tempCategory.setDescription(row.getCell(7).getStringCellValue());
