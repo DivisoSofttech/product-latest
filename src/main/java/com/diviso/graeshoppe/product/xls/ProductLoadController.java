@@ -94,6 +94,7 @@ public class ProductLoadController {
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
 
+
 			System.out.println("...........celllog.........." + row.getLastCellNum());
 
 			if (row.getCell(row.getLastCellNum()) != null) {
