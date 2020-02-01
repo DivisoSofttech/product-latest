@@ -79,19 +79,14 @@ public class ProductLoadController {
 			tempProduct.setiDPcode(row.getCell(1).getStringCellValue());
 			tempProduct.setSellingPrice((double) row.getCell(2).getNumericCellValue());
 			tempProduct.setIsActive(row.getCell(3).getBooleanCellValue());
-			// tempProduct.setReference(row.getCell(4).getStringCellValue());
+			tempProduct.setReference(row.getCell(4).getStringCellValue());
 
 			Category tempCategory = new Category();
-			if (row.getCell(4).getStringCellValue() != null) {
-				tempCategory.setDescription(row.getCell(4).getStringCellValue());
-			}
+		
 			tempCategory.setiDPcode(row.getCell(5).getStringCellValue());
 			tempCategory.setName(row.getCell(6).getStringCellValue());
-			
-			if(row.getCell(7).getStringCellValue().isEmpty()) {
-			break;
-			}
-			else {
+			if (row.getLastCellNum()==7)
+			{
 			tempCategory.setDescription(row.getCell(7).getStringCellValue());
 			}
 
