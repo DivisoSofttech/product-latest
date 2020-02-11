@@ -60,8 +60,6 @@ public class LabelServiceImpl implements LabelService {
     private LabelDTO updateToEs(LabelDTO labelDTO) {
         log.debug("Request to save Label : {}", labelDTO);
         Label label1 = labelMapper.toEntity(labelDTO);
-        
-        label1 = labelRepository.save(label1);
         LabelDTO result= labelMapper.toDto(label1);
         labelSearchRepository.save(label1);
        

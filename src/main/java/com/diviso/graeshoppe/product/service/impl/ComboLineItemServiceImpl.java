@@ -61,9 +61,7 @@ public class ComboLineItemServiceImpl implements ComboLineItemService {
 	
 	private ComboLineItemDTO updateToEs(ComboLineItemDTO comboLineItemDTO) {
 		log.debug("Request to save ComboLineItem : {}", comboLineItemDTO);
-
 		ComboLineItem comboLineItem1 = comboLineItemMapper.toEntity(comboLineItemDTO);
-		comboLineItem1 = comboLineItemRepository.save(comboLineItem1);
 		ComboLineItemDTO result = comboLineItemMapper.toDto(comboLineItem1);
 		comboLineItemSearchRepository.save(comboLineItem1);
 

@@ -59,7 +59,6 @@ public class LocationServiceImpl implements LocationService {
 	private LocationDTO updateToEs(LocationDTO locationDTO) {
 		log.debug("Request to save Location : {}", locationDTO);
 		Location location = locationMapper.toEntity(locationDTO);
-		location = locationRepository.save(location);
 		LocationDTO result = locationMapper.toDto(location);
 		locationSearchRepository.save(location);
 		return result;

@@ -6,6 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +18,8 @@ import java.io.Serializable;
 @Table(name = "stock_current")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "stockcurrent")
+@Setting(settingPath = "settings/stockcurrentsettings.json")
+@Mapping(mappingPath = "mappings/stockcurrent.json") 
 public class StockCurrent implements Serializable {
 
     private static final long serialVersionUID = 1L;

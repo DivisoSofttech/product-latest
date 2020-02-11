@@ -148,11 +148,6 @@ public class ProductServiceImpl implements ProductService {
 		product.setImageLink(imageLink);
 
 		}
-		/*
-		 * Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
-		 * product.setiDPcode(currentUserLogin.get());
-		 */
-		product = productRepository.save(product);
 		ProductDTO result = productMapper.toDto(product);
 		productSearchRepository.save(product);
 

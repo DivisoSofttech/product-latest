@@ -58,7 +58,6 @@ public class DiscountServiceImpl implements DiscountService {
     private DiscountDTO updateToEs(DiscountDTO discountDTO) {
         log.debug("Request to save Discount : {}", discountDTO);
         Discount discount = discountMapper.toEntity(discountDTO);
-        discount = discountRepository.save(discount);
         DiscountDTO result = discountMapper.toDto(discount);
         discountSearchRepository.save(discount);
         return result;

@@ -76,7 +76,6 @@ public class StockCurrentServiceImpl implements StockCurrentService {
     private StockCurrentDTO updateToEs(StockCurrentDTO stockCurrentDTO){
         log.debug("Request to save StockCurrent : {}", stockCurrentDTO);
         StockCurrent stockCurrent = stockCurrentMapper.toEntity(stockCurrentDTO);
-        stockCurrent = stockCurrentRepository.save(stockCurrent);
         StockCurrentDTO result = stockCurrentMapper.toDto(stockCurrent);
         stockCurrentSearchRepository.save(stockCurrent);
 

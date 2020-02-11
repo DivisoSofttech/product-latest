@@ -59,7 +59,6 @@ public class UOMServiceImpl implements UOMService {
     private UOMDTO updateToEs(UOMDTO uOMDTO) {
         log.debug("Request to save UOM : {}", uOMDTO);
         UOM uOM = uOMMapper.toEntity(uOMDTO);
-        uOM = uOMRepository.save(uOM);
         UOMDTO result = uOMMapper.toDto(uOM);
         uOMSearchRepository.save(uOM);
         return result;

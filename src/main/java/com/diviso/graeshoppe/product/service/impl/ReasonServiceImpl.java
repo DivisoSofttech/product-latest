@@ -58,7 +58,6 @@ public class ReasonServiceImpl implements ReasonService {
     private ReasonDTO updateToEs(ReasonDTO reasonDTO) {
         log.debug("Request to save Reason : {}", reasonDTO);
         Reason reason = reasonMapper.toEntity(reasonDTO);
-        reason = reasonRepository.save(reason);
         ReasonDTO result = reasonMapper.toDto(reason);
         reasonSearchRepository.save(reason);
         return result;

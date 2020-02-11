@@ -58,7 +58,6 @@ public class ContactServiceImpl implements ContactService {
     private ContactDTO updateToEs(ContactDTO contactDTO) {
         log.debug("Request to save Contact : {}", contactDTO);
         Contact contact = contactMapper.toEntity(contactDTO);
-        contact = contactRepository.save(contact);
         ContactDTO result = contactMapper.toDto(contact);
         contactSearchRepository.save(contact);
         return result;

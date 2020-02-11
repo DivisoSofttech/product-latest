@@ -5,6 +5,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +19,8 @@ import java.util.Set;
 @Table(name = "category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "category")
+@Setting(settingPath = "settings/categorysettings.json")
+@Mapping(mappingPath = "mappings/categorymappings.json") 
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;

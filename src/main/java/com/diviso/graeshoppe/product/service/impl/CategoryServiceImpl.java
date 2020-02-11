@@ -51,9 +51,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	CategorySuggestionSearchRepository categorySuggestionSearchRepository;
 	
-	
-	
-	
     private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CategoryRepository categoryRepository;
@@ -78,8 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO save(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
-		
-        
+	     
         String imageLink  = imageService.saveFile("category", UUID.randomUUID().toString(), categoryDTO.getImage());
 		category.setImageLink(imageLink);
 	
@@ -102,8 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO saveForFileUpLoad(CategoryDTO categoryDTO) {
         log.debug("Request to save Category : {}", categoryDTO);
         Category category = categoryMapper.toEntity(categoryDTO);
-		
-     
+	  
 	
         category = categoryRepository.save(category);
         CategorySuggestion  categorySuggestion = new CategorySuggestion();
@@ -128,7 +123,6 @@ public class CategoryServiceImpl implements CategoryService {
 		category.setImageLink(imageLink);
 		
 		}
-        category = categoryRepository.save(category);
         CategoryDTO result = categoryMapper.toDto(category);
         categorySearchRepository.save(category);
         return result;
